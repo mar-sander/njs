@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@400;500;600;700;800;900&family=Roboto+Slab:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <title>肉じゃがシステム｜煮込み(Lv999)の作り方‐ひとつの経験を煮込み、未来を語る言葉へ</title>
+    <title>肉じゃがシステム｜煮込み(Lv999)の作り方～ひとつの経験を煮込み、未来を語る言葉へ～</title>
     <style>
       /* ===== 01. カラーパレット・共通変数 ===== */
       :root {
@@ -808,6 +808,16 @@
         margin-bottom: 0;
       }
 
+      /*
+       * 横並びフォームの縦位置を揃える
+       *
+       * 最後の.fieldだけ下余白が0になる場合でも、CSS Gridによって
+       * 内部のラベル行・入力欄行が縦方向へ引き伸ばされないようにする。
+       */
+      .grid > .field {
+        align-self: start;
+      }
+
       label {
         display: block;
         font-weight: 700;
@@ -830,6 +840,12 @@
         padding: 12px 13px;
         box-shadow: 3px 3px 0 var(--line-soft);
         transition: border .12s,box-shadow .12s;
+      }
+
+      /* 横並びになったとき、入力欄と選択欄の高さを揃える */
+      input[type="text"],input[type="date"],select {
+        height: 58px;
+        line-height: 1.5;
       }
 
       textarea {
@@ -883,6 +899,15 @@
         gap: 12px;
         align-items: end;
         margin-bottom: 20px;
+      }
+
+      /* 鍋名入力欄と「新規作成」ボタンの下端・高さを揃える */
+      .project-panel .field {
+        margin-bottom: 0;
+      }
+
+      .project-panel > .btn {
+        min-height: 58px;
       }
 
       .project-list {
