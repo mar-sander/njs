@@ -1,0 +1,3076 @@
+<!doctype html>
+<html lang="ja">
+  <!-- 基本情報・favicon・Webフォント・CSS -->
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#d7d1b9">
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@400;500;600;700;800;900&family=Roboto+Slab:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <title>肉じゃがシステム｜煮込み(Lv999)の作り方‐ひとつの経験を煮込み、未来を語る言葉へ</title>
+    <style>
+      /* ===== 01. カラーパレット・共通変数 ===== */
+      :root {
+        --bg: #cec9b3;
+        --grid: #c2bca6;
+        --surface: #d7d1b9;
+        --surface-2: #c9c3ad;
+        --surface-3: #beb8a3;
+        --ink: #524f46;
+        --muted: #777266;
+        --line: #888274;
+        --line-soft: #b9b39f;
+        --main: #6f695b;
+        --main-dark: #4c4940;
+        --system: #777062;
+        --attack: #c9a08e;
+        --defense: #d6c9a9;
+        --support: #e4d792;
+        --hacking: #eee9d8;
+        --accent: #d56b52;
+        --accent-dark: #9e4938;
+        --shadow: #b7b19d;
+        --danger: #9e4938;
+        --ok: #6f695b;
+        --focus: #3d3a33;
+        --max: 1440px;
+      }
+
+      /* ===== 02. 基本設定・ページ全体 ===== */
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--ink);
+        background-color: var(--bg);
+        background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+        background-size: 18px 18px;
+        font-family: "Roboto Slab","M PLUS 1p","Noto Sans JP","Yu Gothic UI","Yu Gothic",Meiryo,sans-serif;
+        line-height: 2;
+        letter-spacing: .02em;
+      }
+
+      button,input,textarea,select {
+        font: inherit;
+        color: inherit;
+      }
+
+      /* ===== 03. スクロールバー ===== */
+      /* サイト配色に合わせたスクロールバー */
+
+      html {
+        scrollbar-color: var(--line) var(--surface-2);
+      }
+
+      body,.sidebar,.modal-box,textarea {
+        scrollbar-width: thin;
+        scrollbar-color: var(--line) var(--surface-2);
+      }
+
+      body::-webkit-scrollbar,.sidebar::-webkit-scrollbar,.modal-box::-webkit-scrollbar,textarea::-webkit-scrollbar {
+        width: 14px;
+        height: 14px;
+      }
+
+      body::-webkit-scrollbar-track,.sidebar::-webkit-scrollbar-track,.modal-box::-webkit-scrollbar-track,textarea::-webkit-scrollbar-track {
+        background: rgba(201,195,173,.95);
+        border-left: 1px solid var(--line-soft);
+        border-top: 1px solid var(--line-soft);
+      }
+
+      body::-webkit-scrollbar-thumb,.sidebar::-webkit-scrollbar-thumb,.modal-box::-webkit-scrollbar-thumb,textarea::-webkit-scrollbar-thumb {
+        background: var(--main);
+        border: 2px solid var(--surface-2);
+        box-shadow: inset 0 0 0 1px var(--main-dark);
+      }
+
+      body::-webkit-scrollbar-thumb:hover,.sidebar::-webkit-scrollbar-thumb:hover,.modal-box::-webkit-scrollbar-thumb:hover,textarea::-webkit-scrollbar-thumb:hover {
+        background: var(--ink);
+      }
+
+      body::-webkit-scrollbar-corner,.sidebar::-webkit-scrollbar-corner,.modal-box::-webkit-scrollbar-corner,textarea::-webkit-scrollbar-corner {
+        background: var(--surface-2);
+      }
+
+      button {
+        cursor: pointer;
+      }
+
+      a {
+        color: var(--main-dark);
+      }
+
+      :focus-visible {
+        outline: 3px solid var(--accent);
+        outline-offset: 3px;
+      }
+
+      .skip-link {
+        position: fixed;
+        left: 12px;
+        top: -80px;
+        background: var(--ink);
+        color: white;
+        padding: 8px 12px;
+        z-index: 9999;
+      }
+
+      .skip-link:focus {
+        top: 12px;
+      }
+
+      .app {
+        max-width: var(--max);
+        margin: 0 auto;
+        min-height: 100vh;
+        background: rgba(215,209,185,.62);
+        border-left: 1px solid var(--line-soft);
+        border-right: 1px solid var(--line-soft);
+      }
+
+      /* ===== 04. トップバー・共通ボタン ===== */
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+        gap: 16px;
+        padding: 10px 18px;
+        background: rgb(82 79 70 / 80%);
+        border-bottom: 0px solid var(--ink);
+        box-shadow: 0 5px 0 rgba(183,177,157,.55);
+        backdrop-filter: none;
+      }
+
+      .brand-mini {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+        white-space: nowrap;
+        color: #d6d1b9;
+        font-size: 17px;
+      }
+
+      .brand-mark {
+        width: 16px;
+        height: 16px;
+        background: var(--main);
+        box-shadow: 4px 4px 0 var(--ink);
+      }
+
+      .top-status {
+        font-size: .86rem;
+        color: #d7d1b9;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .top-actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .icon-btn,.btn {
+        border: 1px solid var(--ink);
+        border-radius: 0;
+        background: var(--surface);
+        padding: .62rem .85rem;
+        font-weight: 700;
+        box-shadow: 3px 3px 0 var(--shadow);
+        transition: transform .12s ease,box-shadow .12s ease,background .12s ease;
+      }
+
+      .icon-btn:hover,.btn:hover {
+        transform: translate(1px,1px);
+        box-shadow: 2px 2px 0 var(--shadow);
+      }
+
+      .icon-btn:active,.btn:active {
+        transform: translate(3px,3px);
+        box-shadow: 0 0 0 transparent;
+      }
+
+      .btn.primary {
+        background: var(--main);
+        color: #fff;
+        border-color: var(--main-dark);
+        box-shadow: 4px 4px 0 var(--main-dark);
+      }
+
+      .btn.accent {
+        background: var(--accent);
+        color: #fff;
+        border-color: var(--accent-dark);
+        box-shadow: 4px 4px 0 var(--accent-dark);
+      }
+
+      .btn.ghost {
+        background: transparent;
+        box-shadow: none;
+        border-color: var(--line);
+      }
+
+      .btn.danger {
+        color: var(--danger);
+        border-color: var(--danger);
+        box-shadow: 3px 3px 0 rgba(156,85,72,.25);
+      }
+
+      .btn.primary,.btn.accent {
+        font-weight: 700;
+      }
+
+      .btn.ghost,.btn:not(.primary):not(.accent):not(.danger) {
+        font-weight: 600;
+      }
+
+      /* ===== 05. サイドバー・ナビゲーション ===== */
+      .layout {
+        display: grid;
+        grid-template-columns: 260px minmax(0,1fr);
+        min-height: calc(100vh - 64px);
+      }
+
+      .sidebar {
+        margin-top: 10px;
+        position: sticky;
+        top: 64px;
+        height: calc(100vh - 64px);
+        overflow: auto;
+        padding: 20px 14px 40px;
+        background: rgba(201,195,173,.95);
+        border-right: 2px solid var(--ink);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .sidebar-title {
+        font-size: .75rem;
+        font-weight: 900;
+        color: var(--muted);
+        letter-spacing: .18em;
+        margin: 0 0 10px;
+      }
+
+      .nav {
+        display: grid;
+        gap: 7px;
+      }
+
+      .nav button {
+        display: grid;
+        grid-template-columns: 38px 1fr;
+        align-items: center;
+        text-align: left;
+        width: 100%;
+        padding: 10px 9px;
+        border: 1px solid transparent;
+        background: transparent;
+        border-radius: 0;
+        font-weight: 700;
+      }
+
+      .nav button:hover {
+        background: rgba(215,209,185,.72);
+        border-color: var(--line-soft);
+      }
+
+      .nav button.active {
+        background: var(--ink);
+        color: #fff;
+        border-color: var(--ink);
+        box-shadow: 4px 4px 0 var(--accent);
+      }
+
+      .nav-num {
+        font-family: "Roboto Slab","M PLUS 1p",serif;
+        font-size: .76rem;
+        opacity: .78;
+      }
+
+      .sidebar-box {
+        margin-top: 20px;
+        padding: 12px;
+        border: 1px solid var(--ink);
+        background: var(--surface);
+        box-shadow: 4px 4px 0 var(--shadow);
+      }
+
+      .sidebar-box strong {
+        display: block;
+        margin-bottom: 6px;
+      }
+
+      .sidebar-data-action {
+        margin-top: auto;
+        padding-top: 20px;
+        display: grid;
+        gap: 10px;
+      }
+
+      .sidebar-action-btn {
+        width: 100%;
+        background: var(--accent);
+        color: #fff;
+        border-color: var(--accent-dark);
+        box-shadow: 5px 5px 0 var(--accent-dark);
+        font-weight: 700;
+        letter-spacing: .06em;
+      }
+
+      .sidebar-data-btn {
+        width: 100%;
+        background: var(--ink);
+        color: #fff;
+        border-color: var(--ink);
+        box-shadow: 4px 4px 0 var(--accent);
+      }
+
+      .sidebar-scrim {
+        display: none;
+      }
+
+      .progress-track {
+        height: 10px;
+        background: var(--surface-3);
+        border: 1px solid var(--ink);
+        overflow: hidden;
+      }
+
+      .progress-fill {
+        height: 100%;
+        width: 0;
+        background: var(--accent);
+        transition: width .25s ease;
+      }
+
+      .progress-text {
+        margin-top: 7px;
+        font-size: .82rem;
+        color: var(--muted);
+      }
+
+      /* ===== 06. メインコンテンツ共通 ===== */
+      .main {
+        min-width: 0;
+        padding: 28px clamp(16px,3vw,44px) 28px;
+      }
+
+      .view {
+        display: none;
+        animation: fade .18s ease;
+      }
+
+      .view.active {
+        display: block;
+      }
+
+      @keyframes fade {
+        from {
+          opacity: .3;
+          transform: translateY(4px);
+        }
+
+        to {
+          opacity: 1;
+          transform: none;
+        }
+
+      }
+
+      /* ===== 07. HOME・イントロダクション ===== */
+      .hero {
+        position: relative;
+        min-height: 520px;
+        padding: clamp(28px,6vw,76px);
+        display: grid;
+        align-content: center;
+        border: 2px solid var(--ink);
+        background: rgba(215,209,185,.94);
+        box-shadow: 5px 5px 0 var(--shadow);
+        overflow: hidden;
+      }
+
+      .hero::before,.hero::after {
+        content: "";
+        position: absolute;
+        right: -140px;
+        width: 520px;
+        height: 1px;
+        background: rgba(120,114,99,.42);
+        transform: rotate(42deg);
+      }
+
+      .hero::before {
+        top: 140px;
+      }
+
+      .hero::after {
+        top: 270px;
+      }
+
+      .eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 900;
+        letter-spacing: .18em;
+        font-size: .76rem;
+        color: var(--main-dark);
+        text-transform: uppercase;
+      }
+
+      .eyebrow::before {
+        content: "";
+        width: 12px;
+        height: 28px;
+        background: var(--main);
+        display: block;
+      }
+
+      h1 {
+        margin: .5em 0 .22em;
+        max-width: 980px;
+        letter-spacing: -.04em;
+      }
+
+      .hero-title-main {
+        display: block;
+        font-size: clamp(2.15rem,6vw,5.1rem);
+        line-height: 1.08;
+        font-weight: 800;
+      }
+
+      .hero-title-level {
+        display: block;
+        margin-top: .18em;
+        font-size: clamp(1.35rem,3.5vw,2.75rem);
+        line-height: 1.3;
+        font-weight: 700;
+        letter-spacing: -.02em;
+      }
+
+      .hero-sub {
+        font-size: clamp(1.05rem,2.4vw,1.55rem);
+        font-weight: 700;
+        margin: 0 0 1.5rem;
+        color: var(--main-dark);
+      }
+
+      .hero-copy {
+        max-width: 760px;
+        font-size: 1.02rem;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 28px;
+      }
+
+      .hero-note {
+        margin-top: 22px;
+        padding-left: 14px;
+        border-left: 4px solid var(--accent);
+        font-weight: 700;
+      }
+
+      .intro-wrap {
+        position: relative;
+        z-index: 1;
+        margin-top: 30px;
+        max-width: 900px;
+      }
+
+      .intro-panel {
+        padding: 20px 0 0;
+        border-top: 2px solid var(--ink);
+      }
+
+      .intro-panel h2 {
+        margin: 0 0 10px;
+        font-size: clamp(1.45rem,3vw,2rem);
+        line-height: 1.35;
+      }
+
+      .intro-lead {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.9;
+      }
+
+      .intro-details {
+        margin: 18px 0 0;
+        box-shadow: none;
+        background: transparent;
+      }
+
+      .intro-summary {
+        grid-template-columns: 1fr auto;
+        padding: 16px 18px;
+        font-size: 1.05rem;
+        background-color: #6f695b;
+        color: #fff;
+      }
+
+      .intro-body {
+        padding: 26px 28px;
+        background: rgba(215,209,185,.96);
+        font-size: 1rem;
+        line-height: 2;
+      }
+
+      .intro-body p {
+        margin: 0 0 1.45em;
+      }
+
+      .intro-body p:last-child {
+        margin-bottom: 0;
+      }
+
+      .intro-list {
+        margin: 0 0 1.6em;
+        padding-left: 1.4em;
+      }
+
+      .intro-list li {
+        margin: .45em 0;
+      }
+
+      .intro-list.compact li {
+        margin: .2em 0;
+      }
+
+      .intro-list.dishes {
+        font-weight: 800;
+      }
+
+      .intro-key {
+        padding-left: 14px;
+        border-left: 4px solid var(--accent);
+      }
+
+      .intro-divider {
+        border: 0;
+        border-top: 1px solid var(--line-soft);
+        margin: 2.1em 0;
+      }
+
+      .intro-ending {
+        margin-top: 2em!important;
+        padding: 18px 0 0;
+        border-top: 2px solid var(--ink);
+        font-size: 1.12rem;
+      }
+
+      /* ===== 08. 各ページの見出し・カード・アコーディオン ===== */
+      .section-head {
+        display: grid;
+        gap: 5px;
+        margin-bottom: 22px;
+        padding-bottom: 12px;
+        border-bottom: 2px solid var(--ink);
+      }
+
+      .section-head .code {
+        font-family: "Roboto Slab","M PLUS 1p",serif;
+        font-weight: 900;
+        color: var(--accent);
+        font-size: .82rem;
+        letter-spacing: .1em;
+      }
+
+      .section-head h2 {
+        margin: 0;
+        font-size: clamp(1.65rem,3.5vw,2.8rem);
+        line-height: 1.25;
+      }
+
+      .section-head p {
+        margin: 4px 0 0;
+        color: var(--muted);
+        max-width: 900px;
+      }
+
+      .grid {
+        display: grid;
+        gap: 18px;
+      }
+
+      .grid.two {
+        grid-template-columns: repeat(2,minmax(0,1fr));
+      }
+
+      .grid.three {
+        grid-template-columns: repeat(3,minmax(0,1fr));
+      }
+
+      .card {
+        background: rgba(215,209,185,.94);
+        border: 1px solid var(--ink);
+        padding: 20px;
+        border-radius: 0;
+        box-shadow: 5px 5px 0 var(--shadow);
+      }
+
+      .card h3 {
+        margin: .2rem 0 .6rem;
+        font-size: 1.18rem;
+        font-weight: 700;
+      }
+
+      .card h4 {
+        margin: 1rem 0 .4rem;
+      }
+
+      .card p:last-child {
+        margin-bottom: 0;
+      }
+
+      .card-label {
+        display: inline-block;
+        padding: .18rem .5rem;
+        background: var(--surface-3);
+        border: 1px solid var(--ink);
+        font-size: .72rem;
+        font-weight: 900;
+        letter-spacing: .08em;
+      }
+
+      .card.accent-line {
+        border-left: 8px solid var(--accent);
+      }
+
+      .quote {
+        padding: 18px 20px;
+        background: var(--hacking);
+        border: 1px solid var(--ink);
+        border-left: 10px solid var(--main);
+        font-size: 1.05rem;
+        font-weight: 700;
+        box-shadow: 5px 5px 0 rgba(183,177,157,.62);
+      }
+
+      .quote.big {
+        font-size: clamp(1.25rem,3vw,2rem);
+        line-height: 1.55;
+      }
+
+      .step-map {
+        display: grid;
+        grid-template-columns: repeat(6,minmax(110px,1fr));
+        gap: 8px;
+        margin: 26px 0;
+      }
+
+      .step-map button {
+        min-height: 110px;
+        border: 1px solid var(--ink);
+        background: var(--surface);
+        padding: 12px;
+        text-align: left;
+        box-shadow: 4px 4px 0 var(--shadow);
+        font-weight: 700;
+      }
+
+      .step-map button:hover {
+        background: var(--surface-2);
+      }
+
+      .step-map .n {
+        display: block;
+        font-size: .72rem;
+        color: var(--accent);
+        font-family: "Roboto Slab","M PLUS 1p",serif;
+        margin-bottom: 12px;
+      }
+
+      details {
+        background: rgba(215,209,185,.95);
+        border: 1px solid var(--ink);
+        box-shadow: 5px 5px 0 var(--shadow);
+        margin: 0 0 14px;
+      }
+
+      summary {
+        list-style: none;
+        cursor: pointer;
+        padding: 17px 18px;
+        font-weight: 700;
+        display: grid;
+        grid-template-columns: max-content minmax(0,1fr) max-content;
+        gap: 10px;
+        align-items: center;
+        line-height: 1.4;
+      }
+
+      summary::-webkit-details-marker {
+        display: none;
+      }
+
+      summary::after {
+        content: "＋";
+        font-size: 1.2rem;
+        color: var(--accent);
+      }
+
+      details[open] summary::after {
+        content: "－";
+      }
+
+      details[open] summary {
+        background: var(--ink);
+        color: white;
+      }
+
+      .details-body {
+        padding: 20px 22px;
+      }
+
+      .details-body h4 {
+        margin-top: 1.4rem;
+      }
+
+      .details-body ul {
+        padding-left: 1.3rem;
+      }
+
+      .stage-id {
+        font-family: "Roboto Slab","M PLUS 1p",serif;
+        color: var(--accent);
+        font-size: .72rem;
+        line-height: 1.15;
+        letter-spacing: .04em;
+        white-space: nowrap;
+        font-weight: 600;
+      }
+
+      .stage-id+span {
+        min-width: 0;
+        line-height: 1.4;
+      }
+
+      /* ===== 09. 入力フォーム・プロジェクト管理 ===== */
+      .form-section {
+        margin: 0 0 24px;
+        padding: 22px;
+        background: rgba(215,209,185,.96);
+        border: 1px solid var(--ink);
+        box-shadow: 5px 5px 0 var(--shadow);
+      }
+
+      .form-section h3 {
+        margin: 0 0 18px;
+        font-size: 1.3rem;
+        line-height: 1.22;
+        font-weight: 700;
+        letter-spacing: -.01em;
+      }
+
+      .form-section .hint {
+        color: var(--muted);
+        margin: 0 0 16px;
+        line-height: 1.65;
+      }
+
+      .form-section h3+label {
+        margin-top: 2px;
+      }
+
+      .field {
+        display: grid;
+        gap: 7px;
+        margin: 0 0 20px;
+      }
+
+      .field.gap-before {
+        margin-top: 10px;
+      }
+
+      .field:last-child {
+        margin-bottom: 0;
+      }
+
+      label {
+        display: block;
+        font-weight: 700;
+        line-height: 1.22;
+        letter-spacing: -.01em;
+      }
+
+      .label-meta {
+        font-size: .78rem;
+        color: var(--muted);
+        font-weight: 600;
+        margin-left: 6px;
+      }
+
+      input[type="text"],input[type="date"],select,textarea {
+        width: 100%;
+        border: 1px solid var(--ink);
+        border-radius: 0;
+        background: rgba(201,195,173,.66);
+        padding: 12px 13px;
+        box-shadow: 3px 3px 0 var(--line-soft);
+        transition: border .12s,box-shadow .12s;
+      }
+
+      textarea {
+        min-height: 122px;
+        resize: vertical;
+        line-height: 1.75;
+      }
+
+      input:focus,select:focus,textarea:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 4px 4px 0 rgba(213,107,82,.32);
+      }
+
+      .helper {
+        font-size: .82rem;
+        color: var(--muted);
+      }
+
+      .prompt-box {
+        margin-top: 8px;
+        padding: 11px 13px;
+        border-left: 5px solid var(--support);
+        background: var(--hacking);
+        font-size: .9rem;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 10px 0;
+      }
+
+      .chip {
+        border: 1px solid var(--ink);
+        background: var(--surface);
+        padding: .36rem .62rem;
+        font-size: .82rem;
+        font-weight: 600;
+        box-shadow: 2px 2px 0 var(--line);
+      }
+
+      .chip:hover {
+        background: var(--surface-2);
+      }
+
+      .project-panel {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 12px;
+        align-items: end;
+        margin-bottom: 20px;
+      }
+
+      .project-list {
+        display: grid;
+        gap: 10px;
+        margin-top: 15px;
+      }
+
+      .project-item {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 12px;
+        align-items: center;
+        padding: 14px;
+        border: 1px solid var(--ink);
+        background: var(--surface);
+        box-shadow: 5px 5px 0 var(--shadow);
+      }
+
+      .project-item.active {
+        border-left: 8px solid var(--accent);
+      }
+
+      .project-item small {
+        color: var(--muted);
+      }
+
+      .project-actions {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+
+      .mini-btn {
+        border: 1px solid var(--ink);
+        background: transparent;
+        padding: .35rem .55rem;
+        font-size: .78rem;
+        font-weight: 600;
+      }
+
+      .mini-btn:hover {
+        background: var(--surface-2);
+      }
+
+      .checklist {
+        display: grid;
+        gap: 10px;
+      }
+
+      .check {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 12px;
+        align-items: start;
+        padding: 12px;
+        border: 1px solid var(--line-soft);
+        background: rgba(238,233,216,.72);
+        font-weight: 500;
+        line-height: 1.45;
+      }
+
+      .check input {
+        width: 20px;
+        height: 20px;
+        accent-color: var(--accent);
+      }
+
+      .check strong {
+        display: block;
+        font-weight: 700;
+        line-height: 1.35;
+      }
+
+      .type-selector {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+
+      .type-card {
+        position: relative;
+        border: 1px solid var(--ink);
+        background: var(--surface);
+        padding: 18px;
+        box-shadow: 5px 5px 0 var(--shadow);
+        cursor: pointer;
+      }
+
+      .type-card input {
+        position: absolute;
+        opacity: 0;
+      }
+
+      .type-card.selected {
+        background: var(--ink);
+        color: #fff;
+        box-shadow: 5px 5px 0 var(--accent);
+      }
+
+      .flow {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+        margin-top: 10px;
+        font-weight: 700;
+      }
+
+      .flow span {
+        border: 1px solid currentColor;
+        padding: .28rem .45rem;
+      }
+
+      .flow i {
+        font-style: normal;
+        color: var(--accent);
+      }
+
+      /* ===== 10. 出力・フッター・画像表示 ===== */
+      .output-sheet {
+        background: #eee9d8;
+        border: 2px solid var(--ink);
+        padding: clamp(18px,4vw,44px);
+        box-shadow: 5px 5px 0 var(--shadow);
+      }
+
+      .output-sheet h3 {
+        border-bottom: 2px solid var(--ink);
+        padding-bottom: 8px;
+      }
+
+      .output-block {
+        margin: 18px 0;
+      }
+
+      .output-block h4 {
+        margin: 0 0 6px;
+        color: var(--main-dark);
+      }
+
+      .output-value {
+        white-space: pre-wrap;
+        border-left: 5px solid var(--line-soft);
+        padding: 8px 12px;
+        background: var(--surface);
+      }
+
+      .empty {
+        color: var(--muted);
+        font-style: italic;
+      }
+
+      .notice {
+        padding: 14px 16px;
+        border: 1px solid var(--ink);
+        background: var(--support);
+        box-shadow: 5px 5px 0 var(--shadow);
+      }
+
+      .notice.accent {
+        background: #e3b7a5;
+        border-left: 8px solid var(--accent);
+      }
+
+      .privacy {
+        font-size: .83rem;
+        color: var(--muted);
+      }
+
+      .footer {
+        margin-top: 50px;
+        padding: 26px 0 0;
+        border-top: 2px solid var(--ink);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        text-align: center;
+        color: var(--muted);
+        font-size: .82rem;
+        line-height: 1;
+      }
+
+      .footer span {
+        display: block;
+        color: inherit;
+      }
+
+      .footer-copyright {
+        width: auto;
+        padding-top: 4px;
+        border-top: 0;
+        text-align: center;
+        letter-spacing: .05em;
+        color: inherit;
+        line-height: 1.15;
+      }
+
+      .method-figure {
+        margin: 18px 0 14px;
+      }
+
+      .image-open {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background: var(--panel);
+        border: 2px solid var(--line);
+        box-shadow: 5px 5px 0 var(--shadow);
+        cursor: pointer;
+        text-align: left;
+      }
+
+      .image-open img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border: 1px solid rgba(0,0,0,.08);
+      }
+
+      .image-open .open-text {
+        display: inline-block;
+        margin-top: 10px;
+        font-size: 13px;
+        letter-spacing: .08em;
+        color: var(--muted);
+      }
+
+      .modal.figure-modal {
+        padding: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        background: rgba(82,79,70,.82);
+      }
+
+      .modal.figure-modal.open {
+        display: flex;
+      }
+
+      .modal-box.image-viewer {
+        width: 100vw;
+        height: 100vh;
+        max-width: none;
+        max-height: none;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        box-shadow: none;
+        background: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .modal-box.image-viewer img {
+        display: block;
+        width: 100vw;
+        max-width: 100vw;
+        max-height: 100vh;
+        height: auto;
+        margin: 0;
+        border: 0;
+        background: #fff;
+        object-fit: contain;
+        cursor: zoom-out;
+      }
+
+      /* ===== 11. モーダル・メニューボタン ===== */
+      .modal {
+        position: fixed;
+        inset: 0;
+        z-index: 200;
+        background: rgba(82,79,70,.64);
+        display: none;
+        place-items: center;
+        padding: 20px;
+      }
+
+      .modal.open {
+        display: grid;
+      }
+
+      .modal-box {
+        width: min(720px,100%);
+        max-height: 90vh;
+        overflow: auto;
+        background: var(--surface);
+        border: 2px solid var(--ink);
+        box-shadow: 10px 10px 0 var(--accent);
+        padding: 22px;
+      }
+
+      .modal-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        border-bottom: 2px solid var(--ink);
+        padding-bottom: 10px;
+        margin-bottom: 16px;
+      }
+
+      .modal-head h3 {
+        margin: 0;
+      }
+
+      .menu-toggle {
+        display: none;
+        padding: .42rem .48rem;
+        min-width: 52px;
+        min-height: 48px;
+        justify-content: center;
+        align-items: center;
+        color: var(--ink);
+      }
+
+      .menu-toggle .pot-icon {
+        display: block;
+        width: 32px;
+        height: 32px;
+        fill: currentColor;
+      }
+
+      .pot-menu-btn {
+        background: rgb(111 105 91 / 80%);
+        color: var(--surface);
+        border-color: var(--surface-2);
+        box-shadow: 3px 3px 0 rgb(76 73 64 / 80%);
+      }
+
+      .pot-menu-btn:hover {
+        background: var(--system);
+        box-shadow: 2px 2px 0 var(--main-dark);
+      }
+
+      .pot-menu-btn:active {
+        background: var(--main-dark);
+        box-shadow: none;
+      }
+
+      .menu-toggle {
+        display: none;
+      }
+
+      .new-badge {
+        display: inline-block;
+        background: var(--accent);
+        color: #fff;
+        border: 1px solid var(--accent-dark);
+        padding: .12rem .42rem;
+        font-size: .7rem;
+        font-weight: 900;
+        letter-spacing: .08em;
+      }
+
+      .palette-row {
+        display: flex;
+        gap: 0;
+        border: 1px solid var(--ink);
+        height: 52px;
+        margin: 14px 0;
+      }
+
+      .palette-row span {
+        flex: 1;
+        border-right: 1px solid var(--ink);
+      }
+
+      .palette-row span:last-child {
+        border-right: none;
+      }
+
+      .kbd {
+        font-family: "Roboto Slab","M PLUS 1p",serif;
+        border: 1px solid var(--ink);
+        padding: .1rem .35rem;
+        background: white;
+        box-shadow: 2px 2px 0 var(--line-soft);
+      }
+
+      /* Entry password gate */
+
+      body.auth-locked {
+        overflow: hidden;
+      }
+
+      body.auth-locked>.app, body.auth-locked>.skip-link, body.auth-locked>.modal {
+        visibility: hidden;
+        pointer-events: none;
+      }
+
+      /* ===== 12. 入室パスワード認証 ===== */
+      .auth-gate {
+        position: fixed;
+        inset: 0;
+        z-index: 10000;
+        display: none;
+        place-items: center;
+        padding: calc(20px + env(safe-area-inset-top)) 18px calc(20px + env(safe-area-inset-bottom));
+        background-color: var(--bg);
+        background-image: linear-gradient(var(--grid) 1px,transparent 1px), linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+        background-size: 18px 18px;
+        overflow: auto;
+      }
+
+      body.auth-locked>.auth-gate {
+        display: grid;
+        visibility: visible;
+        pointer-events: auto;
+      }
+
+      .auth-box {
+        width: min(520px,100%);
+        padding: 30px 28px 28px;
+        border: 2px solid var(--ink);
+        background: rgba(215,209,185,.98);
+        box-shadow: 5px 5px 0 var(--shadow);
+      }
+
+      .auth-kicker {
+        margin: 0 0 6px;
+        font-size: .76rem;
+        font-weight: 700;
+        letter-spacing: .16em;
+        color: var(--main-dark);
+      }
+
+      .auth-box h1 {
+        margin: 0 0 10px;
+        font-size: clamp(1.8rem,7vw,2.6rem);
+        line-height: 1.2;
+        letter-spacing: -.03em;
+      }
+
+      .auth-copy {
+        margin: 0 0 22px;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+
+      .auth-field {
+        display: grid;
+        gap: 9px;
+        margin: 0;
+      }
+
+      .auth-field label {
+        font-size: .92rem;
+        line-height: 1.3;
+      }
+
+      .auth-input-row {
+        display: block;
+      }
+
+      .auth-input-row input {
+        min-width: 0;
+        background: rgba(201,195,173,.82);
+      }
+
+      .auth-ime-note {
+        margin: 2px 0 0;
+        color: var(--muted);
+        font-size: .76rem;
+        line-height: 1.5;
+      }
+
+      .auth-error {
+        min-height: 1.6em;
+        margin: 10px 0 0;
+        color: var(--danger);
+        font-size: .86rem;
+        font-weight: 700;
+        line-height: 1.5;
+      }
+
+      .auth-submit {
+        width: 100%;
+        margin-top: 16px;
+        font-size: 1.02rem;
+      }
+
+      .auth-note {
+        margin: 17px 0 0;
+        padding-top: 14px;
+        border-top: 1px solid var(--line-soft);
+        font-size: .78rem;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .auth-admin {
+        margin-top: 18px;
+        padding-top: 18px;
+        border-top: 1px solid var(--line-soft);
+      }
+
+      .auth-admin p {
+        margin: 0 0 10px;
+        color: var(--muted);
+        font-size: .82rem;
+        line-height: 1.7;
+      }
+
+      /* ===== 13. レスポンシブ対応 ===== */
+      @media(max-width:520px) {
+        .auth-box {
+          padding: 25px 20px 23px;
+        }
+
+      }
+
+      /* PC view: reserve the document scrollbar gutter so every view keeps the same width */
+
+      @media(min-width:1051px) {
+        html {
+          overflow-y: scroll;
+          scrollbar-gutter: stable;
+        }
+
+      }
+
+      @media(max-width:1050px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          margin-top: 0;
+          position: fixed;
+          left: 0;
+          top: 0;
+          bottom: auto;
+          width: 290px;
+          height: 100dvh;
+          max-height: 100dvh;
+          overflow-y: auto;
+          overflow-x: hidden;
+          overscroll-behavior: contain;
+          -webkit-overflow-scrolling: touch;
+          padding-bottom: calc(40px + env(safe-area-inset-bottom));
+          z-index: 120;
+          transform: translateX(-105%);
+          transition: transform .2s ease;
+          box-shadow: 8px 0 0 rgba(82,79,70,.28);
+        }
+
+        .sidebar.open {
+          transform: translateX(0);
+        }
+
+        .sidebar-scrim {
+          position: fixed;
+          inset: 0;
+          z-index: 110;
+          display: block;
+          background: rgba(82,79,70,.42);
+          opacity: 0;
+          visibility: hidden;
+          transition: opacity .2s ease,visibility .2s ease;
+        }
+
+        .sidebar-scrim.open {
+          opacity: 1;
+          visibility: visible;
+        }
+
+        body.sidebar-open {
+          overflow: hidden;
+        }
+
+        .menu-toggle {
+          display: inline-flex;
+        }
+
+        .topbar {
+          grid-template-columns: auto 1fr auto;
+        }
+
+        .step-map {
+          grid-template-columns: repeat(3,1fr);
+        }
+
+      }
+
+      @media(max-width:760px) {
+        .topbar {
+          height: 70px;
+          min-height: 70px;
+          padding: 8px 10px;
+          gap: 9px;
+          align-items: center;
+        }
+
+        .topbar>* {
+          align-self: center;
+        }
+
+        .brand-mark {
+          width: 13px;
+          height: 13px;
+          box-shadow: 3px 3px 0 var(--ink);
+        }
+
+        .brand-mini span:last-child {
+          display: none;
+        }
+
+        .top-status {
+          font-size: .72rem;
+          line-height: 1.4;
+          display: flex;
+          align-items: center;
+          height: 100%;
+        }
+
+        .top-actions .hide-sm {
+          display: none;
+        }
+
+        .menu-toggle {
+          width: 53px;
+          height: 50px;
+          min-width: 53px;
+          min-height: 50px;
+          padding: 0;
+          margin: 0;
+          align-self: center;
+        }
+
+        .main {
+          padding: 20px 12px 24px;
+        }
+
+        .hero {
+          min-height: 560px;
+          padding: 28px 20px;
+          box-shadow: 5px 5px 0 var(--shadow);
+        }
+
+        .hero-title-main {
+          font-size: 2.45rem;
+        }
+
+        .hero-title-level {
+          font-size: 1.42rem;
+        }
+
+        .grid.two,.grid.three,.type-selector {
+          grid-template-columns: 1fr;
+        }
+
+        .step-map {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .project-panel {
+          grid-template-columns: 1fr;
+        }
+
+        .intro-wrap {
+          margin-top: 24px;
+        }
+
+        .intro-panel {
+          padding-top: 18px;
+        }
+
+        .intro-panel h2 {
+          font-size: 1.45rem;
+        }
+
+        .intro-lead {
+          font-size: .98rem;
+        }
+
+        .intro-summary {
+          padding: 15px 14px;
+          font-size: 1rem;
+        }
+
+        summary:not(.intro-summary) {
+          padding: 14px 12px;
+          gap: 8px;
+          line-height: 1.35;
+        }
+
+        summary:not(.intro-summary) .stage-id {
+          font-size: .64rem;
+          letter-spacing: .02em;
+        }
+
+        summary:not(.intro-summary) .stage-id+span {
+          line-height: 1.35;
+        }
+
+        summary:not(.intro-summary)::after {
+          font-size: 1.05rem;
+        }
+
+        .intro-body {
+          padding: 21px 14px;
+          font-size: 1rem;
+          line-height: 1.95;
+        }
+
+        .intro-body p {
+          margin-bottom: 1.35em;
+        }
+
+        .intro-list {
+          padding-left: 1.25em;
+        }
+
+      }
+
+      @media(max-width:430px) {
+        .step-map {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-actions {
+          display: grid;
+        }
+
+        .hero-actions .btn {
+          width: 100%;
+        }
+
+        .top-actions {
+          gap: 4px;
+        }
+
+        .icon-btn {
+          padding: .55rem .65rem;
+        }
+
+      }
+
+      /* ===== 14. 印刷設定 ===== */
+      @media print {
+        body {
+          background: white!important;
+        }
+
+        .topbar,.sidebar,.no-print,.footer {
+          display: none!important;
+        }
+
+        .layout,.main {
+          display: block;
+          padding: 0;
+        }
+
+        .app {
+          border: 0;
+        }
+
+        .view {
+          display: none!important;
+        }
+
+        .view[data-view="output"] {
+          display: block!important;
+        }
+
+        .output-sheet {
+          box-shadow: none;
+          border: 0;
+          padding: 0;
+        }
+
+        .output-value {
+          background: white;
+        }
+
+        .section-head {
+          margin-top: 0;
+        }
+
+        @page {
+          size: A4 portrait;
+          margin: 14mm;
+        }
+
+      }
+    </style>
+  </head>
+  <body class="auth-locked">
+    <!-- ===== 入室パスワード認証 ===== -->
+    <div class="auth-gate" id="authGate" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+      <form class="auth-box" id="authForm" novalidate>
+        <p class="auth-kicker">NIKUJAGA SYSTEM</p>
+        <h1 id="authTitle">入室パスワード</h1>
+        <p class="auth-copy">このサイトを閲覧するには、パスワードを入力してください。</p>
+        <div class="auth-field">
+          <label for="authPassword">パスワード</label>
+          <div class="auth-input-row">
+            <input id="authPassword" class="auth-password" type="text" inputmode="text" lang="ja" autocomplete="off" autocapitalize="none" spellcheck="false" enterkeyhint="go" aria-describedby="authImeNote authError">
+          </div>
+          <p class="auth-ime-note" id="authImeNote">日本語入力に対応しています。</p>
+        </div>
+        <p class="auth-error" id="authError" aria-live="polite"></p>
+        <button class="btn accent auth-submit" type="submit">入室する</button>
+        <p class="auth-note">一度認証すると、この端末の同じブラウザーでは次回から自動で入室します。サイトデータを削除した場合や、別のブラウザー・端末を使う場合は再入力が必要です。</p>
+      </form>
+    </div>
+    <a class="skip-link" href="#main">本文へ移動</a>
+    <!-- ===== サイト本体 ===== -->
+    <div class="app">
+      <!-- トップバー -->
+      <header class="topbar">
+        <button class="icon-btn menu-toggle pot-menu-btn" id="menuToggle" aria-label="メニューを開く"><svg viewBox="0 0 512 512" aria-hidden="true" focusable="false" class="pot-icon"><path d="M509.612,179.758l-11.417-32.348c-2.373-6.696-8.706-11.189-15.822-11.189h-38.806 c-5.152-13.878-14.037-26.334-25.494-37.182c-17.638-16.652-41.356-29.776-69.02-38.943C321.375,50.958,289.696,45.82,256,45.813 c-51.35,0.043-98.003,11.841-132.971,31.884c-17.468,10.059-32.077,22.24-42.617,36.53c-5.036,6.848-9.094,14.218-11.975,21.994 H29.628c-7.109,0-13.45,4.492-15.823,11.189L2.388,179.758C0.812,184.244,0,188.962,0,193.715v3.276 c0,6.479,5.254,11.739,11.747,11.739c0,0,13.406,0,20.812,0c14.019,0,25.512,9.71,31.012,19.58v120.91 c-0.008,8.797,1.565,17.42,4.468,25.566c5.09,14.283,14.152,27.073,25.888,38.168c17.638,16.667,41.357,29.791,69.02,38.958 c27.678,9.146,59.356,14.269,93.053,14.276c51.349-0.036,98.003-11.834,132.971-31.885c17.468-10.051,32.076-22.232,42.617-36.53 c5.257-7.145,9.475-14.834,12.374-22.986c2.902-8.145,4.474-16.769,4.468-25.566v-120.91c5.5-9.87,16.993-19.58,31.012-19.58 c7.406,0,20.812,0,20.812,0c6.493,0,11.747-5.26,11.747-11.739v-3.276C512,188.962,511.188,184.244,509.612,179.758z M418.7,349.22 c0,5.297-0.916,10.45-2.746,15.602c-3.185,8.971-9.279,18-18.312,26.551c-13.5,12.812-33.53,24.269-57.925,32.305 c-24.378,8.073-53.056,12.783-83.716,12.783c-46.715,0.044-88.85-11.029-118.148-27.928c-14.664-8.42-26.059-18.247-33.49-28.378 c-3.725-5.065-6.493-10.203-8.316-15.334c-1.83-5.152-2.746-10.305-2.746-15.602V216.064c14.841,16.834,36.07,30.552,61.437,40.595 c29.167,11.523,63.925,18.124,101.263,18.131c49.788-0.029,94.97-11.71,128.463-31.254c13.501-7.906,25.077-17.123,34.237-27.53 V349.22z M418.7,176.823c-1.913,6.79-5.185,13.421-9.848,19.892c-11.704,16.247-32.287,31.044-58.868,41.516 c-26.566,10.493-59.002,16.747-93.984,16.74c-46.646,0.029-88.764-11.146-118.463-28.552 c-14.856-8.674-26.574-18.877-34.389-29.704c-4.663-6.471-7.935-13.102-9.848-19.892v-14.036c0-5.304,0.916-10.456,2.746-15.594 c3.185-8.986,9.279-18.015,18.312-26.559c13.501-12.812,33.53-24.268,57.926-32.312C196.662,80.256,225.34,75.538,256,75.545 c46.715-0.036,88.85,11.022,118.148,27.921c14.664,8.428,26.058,18.247,33.49,28.385c3.724,5.065,6.486,10.203,8.316,15.341 c1.83,5.138,2.746,10.29,2.746,15.594V176.823z"></path><path d="M254.739,96.031c-27.366,0-49.552,16.638-49.552,37.168c0,20.516,22.185,37.154,49.552,37.154 c27.363,0,49.549-16.638,49.549-37.154C304.288,112.669,282.102,96.031,254.739,96.031z"></path></svg></button>
+        <div class="brand-mini">
+          <span>NIKUJAGA SYSTEM</span>
+        </div>
+        <div class="top-status" id="topStatus">
+          読み込み中です
+        </div>
+      </header>
+      <!-- サイドバーとメインコンテンツ -->
+      <div class="layout">
+        <!-- サイドナビゲーション -->
+        <aside class="sidebar" id="sidebar" aria-label="メインナビゲーション">
+          <p class="sidebar-title">NIKUJAGA SYSTEM</p>
+          <nav class="nav" id="nav">
+            <button class="active" data-view-target="home"><span class="nav-num">00</span><span>HOME</span></button>
+            <button data-view-target="map"><span class="nav-num">01</span><span>全体レシピ</span></button>
+            <button data-view-target="learn"><span class="nav-num">02</span><span>思想と攻略法</span></button>
+            <button data-view-target="ingredients"><span class="nav-num">03</span><span>材料を集める</span></button>
+            <button data-view-target="simmer"><span class="nav-num">04</span><span>経験を煮込む</span></button>
+            <button data-view-target="research"><span class="nav-num">05</span><span>志望先を調べる</span></button>
+            <button data-view-target="build"><span class="nav-num">06</span><span>型に盛り付ける</span></button>
+            <button data-view-target="interview"><span class="nav-num">07</span><span>面接に備える</span></button>
+            <button data-view-target="output"><span class="nav-num">08</span><span>確認・出力</span></button>
+          </nav>
+          <div class="sidebar-box">
+            <strong>現在の肉じゃが</strong>
+            <div id="sideProjectName">
+              未選択
+            </div>
+            <div class="progress-track" aria-label="入力進捗">
+              <div class="progress-fill" id="progressFill">
+              </div>
+            </div>
+            <div class="progress-text" id="progressText">
+              0% 完成
+            </div>
+          </div>
+          <div class="sidebar-box privacy">
+            <strong>端末内保存</strong>
+            入力内容は、このブラウザーの中だけに保存します。サーバーへ送信しません。
+          </div>
+          <div class="sidebar-data-action">
+            <button class="icon-btn sidebar-action-btn" data-open-modal="projectModal">鍋を選ぶ</button>
+            <button class="icon-btn sidebar-data-btn" data-open-modal="dataModal">鍋の管理</button>
+          </div>
+        </aside>
+        <div class="sidebar-scrim" id="sidebarScrim" aria-hidden="true">
+        </div>
+        <!-- メインコンテンツ -->
+        <main class="main" id="main">
+          <!-- 00 HOME -->
+          <section class="view active" data-view="home">
+            <div class="hero">
+              <div class="eyebrow">
+                NIKUJAGA SYSTEM
+              </div>
+              <h1><span class="hero-title-main">肉じゃがシステム</span><span class="hero-title-level">〜煮込み(Lv999)の作り方〜</span></h1>
+              <p class="hero-sub">ひとつの経験を煮込み、未来を語る言葉へ</p>
+              <p class="hero-copy">志願理由書、自己PR、面接、小論文。用途ごとに別々の自分を作る必要はありません。大切な経験を深く掘り下げ、目的に合わせて切り口を変える。ここは、借り物ではない「自分の言葉」を作るための進路攻略サイトです。</p>
+              <div class="intro-wrap">
+                <section class="intro-panel" aria-labelledby="introHeading">
+                  <h2 id="introHeading">はじめにお読みください</h2>
+                  <p class="intro-lead">このサイトを使い始める前に、肉じゃがシステムの考え方と使い方を読んでください。<br>長い文章ですが、ここにこのサイト全体の土台があります。</p>
+                  <details class="intro-details">
+                    <summary class="intro-summary">
+                      <span>はじめに 〜肉じゃがシステム〜</span>
+                    </summary>
+                    <div class="intro-body">
+                      <ul class="intro-list">
+                        <li>
+                          入社試験や進学試験の対策を、何から始めればよいのか分からない
+                        </li>
+                        <li>
+                          いきなり履歴書や志望理由書を書き始めようとしている
+                        </li>
+                        <li>
+                          ネット上の進路対策情報を、手当たり次第につまみ食いしている
+                        </li>
+                        <li>
+                          自己分析を始めたものの、途中で手が止まってしまう
+                        </li>
+                        <li>
+                          学校から示された進路対策や、自分なりの対策に不安を感じている
+                        </li>
+                      </ul>
+                      <p>筆者は、そういった生徒を見てきました。<br>たくさん、たくさん、見てきました。</p>
+                      <p>そんなあなたに使ってほしいのが、<br><strong>『肉じゃがシステム』</strong>です。</p>
+                      <p>自己分析から、志望理由の言語化、面接、小論文対策まで。</p>
+                      <p>それぞれを別々に考えるのではなく、<br>すべてを一本の道としてつなげました。</p>
+                      <p>このシステムに沿って、<br>一つずつ進めていけば大丈夫です。</p>
+                      <hr class="intro-divider">
+                      <p>進路対策において、いきなり完成した答えを求めると、<br>かえって遠回りになることがあります。</p>
+                      <p>最初から立派な志望理由を書こうとしたり、<br>模範解答のような面接回答を作ろうとしたりしても、<br>その言葉を自分自身が理解できていなければ、<br>少し深く質問されたときに答えられません。</p>
+                      <p>本や資料、ネット記事や動画から、<br>文章の型や考えるためのヒントを得ることはできます。</p>
+                      <p>しかし、</p>
+                      <p class="intro-key"><strong>「あなたは何を答え、何を書くべきなのか」</strong></p>
+                      <p>という答えそのものは、どこにも載っていません。</p>
+                      <p>その答えは、あなた自身の心と経験の中にあります。</p>
+                      <p>ただ、今はまだ、<br>その輪郭がはっきり見えていないだけです。</p>
+                      <p>どんな料理になるのかは、まだ分からない。</p>
+                      <p>けれど、料理に使える食材は、<br>すでにあなたの中にあります。</p>
+                      <p>大切なのは、その食材を一つの鍋に入れて、<br>じっくり煮込むことです。</p>
+                      <p>ここでいう食材とは、</p>
+                      <ul class="intro-list compact">
+                        <li>
+                          実際に起きた出来事
+                        </li>
+                        <li>
+                          そのときに感じたこと
+                        </li>
+                        <li>
+                          そこから学んだこと
+                        </li>
+                        <li>
+                          その経験によって変わったこと
+                        </li>
+                        <li>
+                          今や未来へつながっていること
+                        </li>
+                      </ul>
+                      <p>これらを無理やり一つに混ぜ合わせるのではありません。</p>
+                      <p>それぞれを別々のものとして丁寧に見ながら、<br>その間にどのようなつながりがあるのかを考えます。</p>
+                      <hr class="intro-divider">
+                      <p>まずは、一つの具体的な経験――エピソードを選び、<br>徹底的に深掘りしましょう。</p>
+                      <p>これが、最初の「煮込み」です。</p>
+                      <p>そのとき、自分の気持ちや感じたことという<br><strong>下味</strong>をつけることも忘れないでください。</p>
+                      <p>何が起きたのかだけでなく、</p>
+                      <ul class="intro-list compact">
+                        <li>
+                          なぜ嬉しかったのか
+                        </li>
+                        <li>
+                          なぜ悔しかったのか
+                        </li>
+                        <li>
+                          なぜ諦めたくなかったのか
+                        </li>
+                        <li>
+                          なぜ、その出来事が今も心に残っているのか
+                        </li>
+                      </ul>
+                      <p>まで考えます。</p>
+                      <p class="intro-key">――これが、自己分析です。</p>
+                      <p>さらに、じっくりコトコト煮込んでいきます。</p>
+                      <p>すると、一つの経験の奥にあった、<br>自分なりの価値観や判断基準が見えてきます。</p>
+                      <p>「自分は、こういうことを大切にしていたのか」<br>「自分は、こういうときに力を発揮するのか」<br>「自分は、こんな未来を望んでいるのか」</p>
+                      <p>そうして、すべての土台となる<br>「煮込み」が出来上がります。</p>
+                      <p class="intro-key">――これが、<strong>自分の軸</strong>です。</p>
+                      <hr class="intro-divider">
+                      <p>この煮込みは、濃度の高い経験と想いの塊です。</p>
+                      <p>表現の仕方、切り出す場所、加工方法を変えることで、<br>さまざまな料理へ展開できます。</p>
+                      <ul class="intro-list dishes">
+                        <li>
+                          面接なら、肉じゃが
+                        </li>
+                        <li>
+                          小論文なら、カレー
+                        </li>
+                        <li>
+                          志望理由書なら、シチュー
+                        </li>
+                      </ul>
+                      <p>同じ材料や煮込みを使っていても、<br>求められる料理によって見せ方は変わります。</p>
+                      <p>「同じエピソードを何度も使ってよいのか」</p>
+                      <p>そう疑問に思うかもしれません。</p>
+                      <p>しかし、広く浅いエピソードをたくさん並べても、</p>
+                      <p class="intro-key"><strong>「それで、あなたは何に気づき、何を学んだのですか？」</strong></p>
+                      <p>という問いに、深く答えることはできません。</p>
+                      <p>むしろ、一つの核となるエピソードを<br>さまざまな角度から見つめ、深いところまで潜り、<br>そこから得た学びを語る。</p>
+                      <p>その方が、あなたの言葉には筋が通ります。</p>
+                      <p>志望理由書では「興味を持った原点」として使い、<br>自己PRでは「自分の強みが表れた経験」として使い、<br>面接では「困難をどう乗り越えたか」として語り、<br>小論文では「自分の主張を支える具体例」として使う。</p>
+                      <p>話の土台は同じでも、切り口は異なります。</p>
+                      <p>毎回、同じ肉じゃがを<br>そのまま提出するわけではありません。</p>
+                      <p>肉じゃがをコロッケへ作り替えたり、<br>カレーをカレーうどんやカレードリアへ展開したりするように、<br>同じ煮込みから、別の側面を取り出して語るのです。</p>
+                      <p>一貫していて、簡単にはブレない言葉には、<br>借り物の言葉とは比較にならないほど、<br>強い意志が宿ります。</p>
+                      <p>そして、強い意志を持つ人に出会ったとき、<br>私たちはこう思います。</p>
+                      <p class="intro-key"><strong>「この人には、未来の可能性がある」<br>「この人を信じてみたい」</strong></p>
+                      <p>まずは、一つの核となるエピソードがあれば大丈夫です。</p>
+                      <p>大切なのは、その経験をどこまで深く、<br>じっくりコトコト煮込めるか。</p>
+                      <p>それが、おいしい肉じゃがやカレーを作る鍵になります。</p>
+                      <hr class="intro-divider">
+                      <p>試験という戦いには、<br>さまざまな不安が付きまといます。</p>
+                      <p>何を聞かれるのか分からない。<br>自分の答えが正しいのか分からない。<br>想定外の質問が来たら、答えられないかもしれない。</p>
+                      <p>そんな不安の中で、戦いの基盤となる煮込みを作るのは、<br>大変かもしれません。</p>
+                      <p>しかし、逆に言えば、<br>良質な煮込みさえ用意できれば、<br>対応できる範囲は大きく広がります。</p>
+                      <p>未知の質問や想定外の問いを投げかけられても、<br>自分の経験と、自分の軸へ戻って考えることができます。</p>
+                      <p>暗記した答えを思い出すのではなく、<br>その場で、自分の言葉を使って答えられるようになります。</p>
+                      <p class="intro-ending"><strong>さあ、鍋は用意しました。<br>あなただけの、最強の煮込みを作りましょう。</strong></p>
+                    </div>
+                  </details>
+                </section>
+              </div>
+              <div style="height:28px">
+              </div>
+              <div class="hero-actions">
+                <button class="btn accent" id="startNew">新しい肉じゃがを作る</button>
+                <button class="btn primary" id="resumeProject">煮込みを再開する</button>
+                <button class="btn" data-view-go="map">まず全体像を見る</button>
+              </div>
+              <p class="hero-note">進路先は人生のゴールではありません。大切なのは、<strong>その場所で、今日をどう生きるか。</strong></p>
+            </div>
+            <div style="height:34px">
+            </div>
+            <div class="grid three">
+              <article class="card">
+                <span class="card-label">BOOK</span>
+                <h3>思想を読む</h3>
+                <p>「手段としての居場所」「定着性・活躍性」「自分の言葉で話す」という考えを学びます。</p>
+                <button class="btn ghost" data-view-go="learn">思想と攻略法へ</button>
+              </article>
+              <article class="card">
+                <span class="card-label">WORK</span>
+                <h3>経験を煮込む</h3>
+                <p>一つの経験を五つの問いで深掘りし、志願理由書や面接で使える材料へ育てます。</p>
+                <button class="btn ghost" data-view-go="simmer">肉じゃが法へ</button>
+              </article>
+              <article class="card">
+                <span class="card-label">SYSTEM</span>
+                <h3>端末に残す</h3>
+                <p>書きかけでも自動保存。志望先ごとに複数の「鍋」を作り、後日続きを考えられます。</p>
+                <button class="btn ghost" data-open-modal="dataModal">保存について</button>
+              </article>
+            </div>
+            <div style="height:28px">
+            </div>
+            <div class="quote big">
+              完璧な夢はなくてもいい。
+              <br>
+              ただし、選んだ場所を、自分の未来のためにどう使うかは考えてほしい。
+            </div>
+          </section>
+          <!-- 01 全体レシピ -->
+          <section class="view" data-view="map">
+            <header class="section-head">
+              <span class="code">SYSTEM RECIPE</span>
+              <h2>このサイトの全体レシピ</h2>
+              <p>レジュメで全体像をつかみ、必要な場所から作業を始められます。順番に進めても、行き来しても構いません。</p>
+            </header>
+            <div class="step-map">
+              <button data-view-go="learn"><span class="n">STEP 01</span>考え方を学ぶ</button>
+              <button data-view-go="ingredients"><span class="n">STEP 02</span>自分の材料を集める</button>
+              <button data-view-go="simmer"><span class="n">STEP 03</span>経験を深く煮込む</button>
+              <button data-view-go="research"><span class="n">STEP 04</span>志望先との接点を探す</button>
+              <button data-view-go="build"><span class="n">STEP 05</span>二つの型に盛り付ける</button>
+              <button data-view-go="interview"><span class="n">STEP 06</span>面接に耐えられるか確認</button>
+            </div>
+            <div class="grid two">
+              <article class="card accent-line">
+                <h3>肉じゃが法の役割</h3>
+                <p>自分の大切な経験を一つか二つ選び、深く掘り下げて、文章に使える「材料」を作ります。</p>
+                <div class="flow">
+                  <span>経験</span>
+                  <i>→</i>
+                  <span>感情</span>
+                  <i>→</i>
+                  <span>学び</span>
+                  <i>→</i>
+                  <span>変化</span>
+                  <i>→</i>
+                  <span>未来</span>
+                </div>
+              </article>
+              <article class="card accent-line">
+                <h3>Lv999の役割</h3>
+                <p>肉じゃが法で作った材料を、志望先の特徴と接続し、筋の通った志願理由書として組み立てます。</p>
+                <div class="flow">
+                  <span>自分の軸</span>
+                  <i>×</i>
+                  <span>志望先</span>
+                  <i>→</i>
+                  <span>未来の意思</span>
+                </div>
+              </article>
+            </div>
+            <div style="height:22px">
+            </div>
+            <div class="notice">
+              <strong>このサイトの方針：</strong>
+              完成文章を自動生成しません。問いを置き、材料を整理し、本人が自分の言葉を作るための足場になります。
+            </div>
+            <div style="height:22px">
+            </div>
+            <div class="grid two no-print">
+              <a class="btn" href="resume.pdf" target="_blank" rel="noopener">2ページレジュメを開く</a>
+              <a class="btn" href="guide.pdf" target="_blank" rel="noopener">冊子『志願理由書の書き方Lv999』を開く</a>
+            </div>
+          </section>
+          <!-- 02 思想と攻略法 -->
+          <section class="view" data-view="learn">
+            <header class="section-head">
+              <span class="code">KNOWLEDGE ARCHIVE</span>
+              <h2>思想と攻略法</h2>
+              <p>筆者の進路思想、志願理由書の書き方Lv999、肉じゃが法を横断して学ぶ章です。開いた章だけ読めます。</p>
+            </header>
+            <details open>
+              <summary>
+                <span class="stage-id">CORE 01</span>
+                <span>進路先は「手段としての居場所」</span>
+              </summary>
+              <div class="details-body">
+                <p>学校や会社は、自分を自動的に幸せにしてくれる完成された理想郷ではありません。やりたいことをするため、なりたい自分になるために利用する環境であり、足場です。</p>
+                <p>「理系だから工業高校」「有名企業だから応募」という場所起点の選択だけでなく、<strong>目的 → 必要な力 → その力を得る環境</strong>の順で考えます。</p>
+                <div class="quote">
+                  進路とは、「自分に合う場所」を探すことだけではなく、「なりたい自分に近づくために、どの環境をどう使うか」を考えることです。
+                </div>
+                <h4>理想の場所でなくても、生き方は選べる</h4>
+                <p>第一志望に進めなかったり、家庭の事情で進路を変更したりしても、夢そのものが失われたとは限りません。今いる場所で新しい興味を見つけ、役割を引き受け、仕事や学びに自分で意義を与えることができます。</p>
+                <p><strong>どこにいるかだけで人生は決まりません。その場所で、今日をどう生きるか。</strong></p>
+              </div>
+            </details>
+            <details>
+              <summary>
+                <span class="stage-id">CORE 02</span>
+                <span>今を懸命に生きる人が、チャンスをつかむ</span>
+              </summary>
+              <div class="details-body">
+                <p>チャンスは、誰か一人にだけ与えられる魔法ではありません。多くの人の前に現れます。しかし、それをチャンスだと気づき、手を伸ばし、形にできるかどうかは、それまでの積み重ねに左右されます。</p>
+                <p>目の前の学びや仕事、人との関わりに向き合ってきた人は、技術だけでなく、判断力・信頼・準備を蓄えています。未来ばかりを見て今日を雑に扱わず、今日を懸命に生きることが、未来を受け取る準備になります。</p>
+                <div class="quote">
+                  進路先が君を変えてくれるのではない。その場所で、君が今日をどう生きるかが、未来のチャンスをつかむ力になる。
+                </div>
+              </div>
+            </details>
+            <details>
+              <summary>
+                <span class="stage-id">STAGE 01</span>
+                <span>志望動機は最重要ではない</span>
+              </summary>
+              <div class="details-body">
+                <p>相手は、志望動機を知りたくて仕方がないわけではありません。あなたという人間を知るための入口として、志望動機を尋ねるのが手っ取り早いのです。</p>
+                <p>志願理由書は自己PR大会ではありません。資格・大会実績・長所は、立派さを見せるためではなく、「なぜ志望するのか」を支える根拠として使います。</p>
+                <h4>志望動機は「ツッコミどころ」</h4>
+                <p>面接官は、志望動機に書かれた内容から質問します。深掘りされても自分の経験と考えを説明できるか。志望先を本当に調べ、納得して選んだか。そこに本気度と信頼性が表れます。</p>
+              </div>
+            </details>
+            <details>
+              <summary>
+                <span class="stage-id">STAGE 02</span>
+                <span>採る側が見る、定着性・活躍性・信頼性</span>
+              </summary>
+              <div class="details-body">
+                <h4>定着性</h4>
+                <p>この環境を理解し、困難があっても継続して学び、働けそうか。相手は、人・時間・設備を投資する対象として、簡単に投げ出さない人物かを見ます。</p>
+                <h4>活躍性</h4>
+                <p>現在の完成度ではなく、その環境で成長し、未来に価値を生み出しそうか。派手な夢よりも、学ぶ姿勢と具体的な行動が重要です。</p>
+                <h4>信頼性</h4>
+                <p>書かれた言葉が、本当に本人の経験・意思・表現なのか。面接で説明できるか。素直さ、誠実さ、熱意が感じられるかを確認されます。</p>
+                <div class="quote">
+                  相手に「この人に未来の可能性を感じる」「この人は信頼できる」と思わせられれば、志願理由書は役割を果たしています。
+                </div>
+              </div>
+            </details>
+            <details>
+              <summary>
+                <span class="stage-id">STAGE 03</span>
+                <span>立派な夢がなくても、目的意識は育てられる</span>
+              </summary>
+              <div class="details-body">
+                <p>「大学でやりたいことを見つけたい」「自分にもできそうだから応募したい」という気持ちを否定する必要はありません。多くの大人も、最初から完成した人生観を持って進路を選んだわけではありません。</p>
+                <p>ただし、そこで思考を止めません。「見つけるために何を試すのか」「できそうだと思った根拠は何か」と問いを一つ加え、受け身の希望を能動的な目的へ変えます。</p>
+                <div class="quote">
+                  進路選択に、最初から完璧な目的意識はいらない。でも、選んだ場所を自分の人生のためにどう使うかという視点は持ってほしい。
+                </div>
+              </div>
+            </details>
+            <details>
+              <summary>
+                <span class="stage-id">STAGE 04</span>
+                <span>強み・得意・スキル・人生観の軸</span>
+              </summary>
+              <div class="details-body">
+                <h4>得意</h4>
+                <p>努力しなくても比較的うまくいくこと、苦に感じず続けられること。本人には自然すぎて気づきにくいものです。</p>
+                <h4>強み</h4>
+                <p>無意識に発動し、良い結果をもたらす思考や行動のパターンです。締切から逆算する、細部まで作り込む、困っている人に声をかける、伝える努力を諦めない、などが該当します。</p>
+                <h4>スキル</h4>
+                <p>学習と経験によって後から身につけた能力です。プログラミング、CAD、デザイン、資格、機械操作などです。</p>
+                <h4>人生観の軸</h4>
+                <p>過去の「達成感・楽しさ・嬉しさ」の共通点を探します。何をしたとき、自分は生きる喜びを感じたのか。その正体が、進路と仕事を選ぶ判断軸になります。</p>
+              </div>
+            </details>
+            <details>
+              <summary>
+                <span class="stage-id">STAGE 05</span>
+                <span>社会貢献と偽善の葛藤</span>
+              </summary>
+              <div class="details-body">
+                <p>「人の役に立ちたい」と本気で思っているほど、「偽善に聞こえないか」と悩むことがあります。その葛藤は、本気で向き合っている証拠です。</p>
+                <p>善意に自己満足が混じること自体は悪ではありません。大切なのは、相手を自分の満足のために利用していないか、考えを押しつけていないか、行動に理由と責任があるかです。</p>
+                <div class="quote">
+                  善意の純度より、行動が生んだ価値を見る。偽善かどうかより、その行動に責任と思いやりがあるかを考える。
+                </div>
+                <p>「社会貢献したい」と書くなら、誰のどんな困りごとを、なぜ、どんな行動で解決したいのかまで具体化します。</p>
+              </div>
+            </details>
+            <details>
+              <summary>
+                <span class="stage-id">STAGE 06</span>
+                <span>自分と志望先の「接点」を探す</span>
+              </summary>
+              <div class="details-body">
+                <p>「理念に共感しました」「事業に魅力を感じました」「社会貢献したいです」は、悪い言葉ではありません。しかし、多くの人が使うため、それだけでは本人が見えません。</p>
+                <p>志望理由とは、自分側の材料と、志望先側の環境が交わる場所です。</p>
+                <div class="grid two">
+                  <div class="card">
+                    <h4>自分側</h4>
+                    <ul>
+                      <li>
+                        やりたいこと・なりたい自分
+                      </li>
+                      <li>
+                        経験・価値観
+                      </li>
+                      <li>
+                        強み・得意・スキル
+                      </li>
+                      <li>
+                        誰に何を届けたいか
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="card">
+                    <h4>志望先側</h4>
+                    <ul>
+                      <li>
+                        学べる内容・仕事内容
+                      </li>
+                      <li>
+                        教育方針・研究・事業
+                      </li>
+                      <li>
+                        実習・設備・社風
+                      </li>
+                      <li>
+                        成長と挑戦の機会
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <p><strong>この学校・会社に何をしてもらえるか</strong>ではなく、<strong>この環境を使って、自分は何をするのか</strong>を考えます。</p>
+              </div>
+            </details>
+            <details>
+              <summary>
+                <span class="stage-id">STAGE 07</span>
+                <span>志願理由書の二つの型</span>
+              </summary>
+              <div class="details-body">
+                <h4>型A：エピソード起点型</h4>
+                <div class="flow">
+                  <span>志願</span>
+                  <i>→</i>
+                  <span>原体験</span>
+                  <i>→</i>
+                  <span>価値観</span>
+                  <i>→</i>
+                  <span>志望先との接点</span>
+                  <i>→</i>
+                  <span>未来</span>
+                </div>
+                <p>志望のきっかけとなった経験があり、「この経験から興味を持った」と説明できる人に向いています。</p>
+                <h4>型B：目的・理由型</h4>
+                <div class="flow">
+                  <span>志願</span>
+                  <i>→</i>
+                  <span>目的</span>
+                  <i>→</i>
+                  <span>根拠</span>
+                  <i>→</i>
+                  <span>志望先との接点</span>
+                  <i>→</i>
+                  <span>未来</span>
+                </div>
+                <p>将来像が比較的明確で、特別な原体験よりも、強みや価値観から説明しやすい人に向いています。</p>
+                <p>どちらの型も、最後は単なる結論の反復ではなく、<strong>その場所で何を学び、どう行動し、どんな自分へ近づくのか</strong>を書きます。</p>
+              </div>
+            </details>
+            <details>
+              <summary>
+                <span class="stage-id">STAGE 08</span>
+                <span>文章は「接続」で作る</span>
+              </summary>
+              <div class="details-body">
+                <p>いきなり本文を書き始めません。まず最初の「何を目指して志望するのか」と、最後の「その場所で何をするのか」を決めます。スタートとゴールを先に置き、その間を経験・考え・志望先の特徴でつなぎます。</p>
+                <h4>必要な二つの接続</h4>
+                <ol>
+                  <li>
+                    <strong>過去・現在と未来：</strong>
+                    経験 → 考え → 目標
+                  </li>
+                  <li>
+                    <strong>自分と志望先：</strong>
+                    目標 → 必要な環境 → この志望先
+                  </li>
+                </ol>
+                <p>「成長したい」「人の役に立ちたい」「技術を身につけたい」と書いたら、誰に、何を、どのように、なぜ、と問い返して具体化します。</p>
+              </div>
+            </details>
+            <details>
+              <summary>
+                <span class="stage-id">STAGE 09</span>
+                <span>AIは代筆者ではなく、思考補助者</span>
+              </summary>
+              <div class="details-body">
+                <p>AIは文章を整えられます。しかし、本人が経験していないこと、考えていないこと、面接で説明できないことを書かせると、信頼性を失います。</p>
+                <p>適切な使い方は、問いを出してもらう、考えを整理する、構成を確認する、分かりにくい表現を直すことです。</p>
+                <div class="notice accent">
+                  <strong>このサイトも同じです。</strong>
+                  完成文を勝手に作らず、本人が考えるための問いと構造を提供します。
+                </div>
+              </div>
+            </details>
+            <details>
+              <summary>
+                <span class="stage-id">STAGE 10</span>
+                <span>面接は、模範解答を返すゲームではない</span>
+              </summary>
+              <div class="details-body">
+                <p>面接は対話です。書類の信憑性、人柄、能力、熱量を、実際の受け答えから確かめます。話すのが上手な人だけが有利なのではありません。</p>
+                <p>重要なのは、自分の芯を持ち、自分の経験と考えを、素直に誠実に話せることです。回答から相手が「信頼できる」「本気で考えている」「この環境で成長しそうだ」と感じられるかが本質です。</p>
+                <div class="quote">
+                  書類は自分の言葉で書く。面接は自分の言葉で話す。それでいい。
+                </div>
+              </div>
+            </details>
+            <details>
+              <summary>
+                <span class="stage-id">METHOD</span>
+                <span>肉じゃが法とは何か</span>
+              </summary>
+              <div class="details-body">
+                <p>自分にとって大切な一つの体験を深く掘り下げ、面接・小論文・志望理由書など、目的に合わせて切り口を変えて活用する方法です。</p>
+                <p>たくさんのエピソードを浅く用意するのではありません。「これは自分を変えた」と言える体験を一つか二つ選び、次の五項目を煮込みます。</p>
+                <div class="method-figure">
+                  <button type="button" class="image-open" data-open-modal="nikujagaFigureModal" aria-label="肉じゃが法の図を拡大表示"> <img src="images/nikujaga-method.jpg" alt="肉じゃが法の説明図。ひとつの核となる体験を深く煮込み、面接・小論文・志望理由書へ展開する考え方を示した図"> <span class="open-text">クリックで拡大表示</span> </button>
+                </div>
+                <ol>
+                  <li>
+                    何があったのか
+                  </li>
+                  <li>
+                    何を感じたのか
+                  </li>
+                  <li>
+                    何を学んだのか
+                  </li>
+                  <li>
+                    自分がどう変わったのか
+                  </li>
+                  <li>
+                    今や未来にどうつながっているのか
+                  </li>
+                </ol>
+                <p>同じ材料でも、志願理由書では「原点」、自己PRでは「強み」、面接では「挫折からの成長」、小論文では「主張の根拠」に切り替えられます。肉じゃがの材料をカレーやシチューへ展開するように、経験の意味を用途ごとに盛り付けます。</p>
+              </div>
+            </details>
+          </section>
+          <!-- 03 材料を集める -->
+          <section class="view" data-view="ingredients">
+            <header class="section-head">
+              <span class="code">STEP 02 / INGREDIENTS</span>
+              <h2>自分の材料を集める</h2>
+              <p>立派な文章を書く必要はありません。まずは、自分の中にすでにある経験・気質・能力・目的を、短いメモとして置いてください。</p>
+            </header>
+            <div class="notice">
+              このページの入力は自動保存されます。空欄があっても構いません。後から戻って書き足せます。
+            </div>
+            <div style="height:18px">
+            </div>
+            <div class="form-section">
+              <h3>鍋の基本情報</h3>
+              <p class="hint">志望先ごとに一つの鍋を作ると整理しやすくなります。</p>
+              <div class="grid two">
+                <div class="field">
+                  <label for="projectTitle">この鍋の名前</label>
+                  <input id="projectTitle" data-field="meta.title" type="text" placeholder="例：○○大学 情報工学部／△△株式会社 技術職">
+                </div>
+                <div class="field">
+                  <label for="routeType">進路の種類</label>
+                  <select id="routeType" data-field="meta.routeType"><option value="">選択してください</option><option>大学・短期大学</option><option>専門学校・各種学校</option><option>就職</option><option>公務員</option><option>その他</option></select>
+                </div>
+              </div>
+            </div>
+            <div class="form-section">
+              <h3>やりたいこと・なりたい自分</h3>
+              <p class="hint">学校名・会社名ではなく、その先で実現したいことを考えます。</p>
+              <div class="field">
+                <label>将来、関わってみたいことは何ですか</label>
+                <textarea data-field="ingredients.want" placeholder="例：人が使いやすい情報システムを作る仕事に関わりたい"></textarea>
+                <div class="prompt-box">
+                  まだ決まっていない場合：興味があること、試してみたいこと、知りたいことでも構いません。
+                </div>
+              </div>
+              <div class="field">
+                <label>どんな自分になりたいですか</label>
+                <textarea data-field="ingredients.become" placeholder="技術・役割・人との関わり方など、自由に書いてください"></textarea>
+              </div>
+              <div class="field">
+                <label>誰に、どんな価値を届けたいですか</label>
+                <textarea data-field="ingredients.value" placeholder="例：情報が苦手な人でも迷わず使える仕組みを届けたい"></textarea>
+              </div>
+            </div>
+            <div class="form-section">
+              <h3>人生観の軸</h3>
+              <p class="hint">過去の「嬉しかった・楽しかった・達成感があった」瞬間の共通点を探します。</p>
+              <div class="field">
+                <label>心から嬉しかった経験</label>
+                <textarea data-field="ingredients.joy" placeholder="何が起き、なぜ嬉しかったのか"></textarea>
+              </div>
+              <div class="field">
+                <label>時間を忘れて取り組めたこと</label>
+                <textarea data-field="ingredients.absorb" placeholder="趣味、授業、制作、人との関わりなど"></textarea>
+              </div>
+              <div class="field">
+                <label>共通している「喜びの正体」</label>
+                <textarea data-field="ingredients.axis" placeholder="例：自分の工夫によって、誰かが理解できた瞬間が嬉しい"></textarea>
+              </div>
+            </div>
+            <div class="form-section">
+              <h3>得意・強み・スキル</h3>
+              <div class="field">
+                <label>得意 <span class="label-meta">苦に感じず、自然に続けられること</span></label>
+                <textarea data-field="ingredients.talent"></textarea>
+                <div class="chips">
+                  <button class="chip" type="button" data-insert="ingredients.talent" data-text="細部まで作り込むこと">細部まで作り込む</button>
+                  <button class="chip" type="button" data-insert="ingredients.talent" data-text="情報を整理すること">情報を整理する</button>
+                  <button class="chip" type="button" data-insert="ingredients.talent" data-text="人の話を聞くこと">人の話を聞く</button>
+                </div>
+              </div>
+              <div class="field">
+                <label>強み <span class="label-meta">無意識に発動し、良い結果を生む傾向</span></label>
+                <textarea data-field="ingredients.strength"></textarea>
+              </div>
+              <div class="field">
+                <label>スキル <span class="label-meta">学びや経験で身につけた後付け能力</span></label>
+                <textarea data-field="ingredients.skill" placeholder="資格、制作技術、機械操作、コミュニケーション方法など"></textarea>
+              </div>
+              <div class="field">
+                <label>周囲から言われた、自分では気づきにくい良さ</label>
+                <textarea data-field="ingredients.feedback"></textarea>
+              </div>
+            </div>
+          </section>
+          <!-- 04 経験を煮込む -->
+          <section class="view" data-view="simmer">
+            <header class="section-head">
+              <span class="code">STEP 03 / NIKUJAGA METHOD</span>
+              <h2>ひとつの経験を煮込む</h2>
+              <p>「これは自分を変えた」「今の自分につながっている」と言える経験を一つ選び、五つの問いで深く掘り下げます。</p>
+            </header>
+            <div class="form-section">
+              <h3>材料となる経験</h3>
+              <div class="field">
+                <label>経験のタイトル</label>
+                <input data-field="simmer.title" type="text" placeholder="例：課題研究でチームが止まったときの経験">
+              </div>
+              <div class="field">
+                <label>なぜ、この経験を選びましたか</label>
+                <textarea data-field="simmer.why"></textarea>
+              </div>
+            </div>
+            <div class="form-section">
+              <h3>1．何があったのか</h3>
+              <p class="hint">評価や感想より先に、状況・役割・行動・結果を事実として書きます。</p>
+              <div class="field">
+                <textarea data-field="simmer.fact" placeholder="いつ、どこで、誰と、何をして、どんな問題があり、自分は何をしたか"></textarea>
+              </div>
+              <div class="prompt-box">
+                問い：あなたの役割は何でしたか。最初の状態と最後の状態はどう違いましたか。
+              </div>
+            </div>
+            <div class="form-section">
+              <h3>2．何を感じたのか</h3>
+              <p class="hint">嬉しい、悔しい、不安、怒り、安心。感情は、あなたが何を大切にしたかを示します。</p>
+              <div class="field">
+                <textarea data-field="simmer.feel"></textarea>
+              </div>
+              <div class="prompt-box">
+                問い：なぜ、その感情が生まれたのでしょう。同じ出来事でも、あなたが特に反応した点は何ですか。
+              </div>
+            </div>
+            <div class="form-section">
+              <h3>3．何を学んだのか</h3>
+              <p class="hint">出来事の感想ではなく、今後も使える考え方や判断基準へ変換します。</p>
+              <div class="field">
+                <textarea data-field="simmer.learn"></textarea>
+              </div>
+              <div class="prompt-box">
+                問い：次に似た状況が来たら、何を大切にしますか。誰かに一言で教えるなら何と言いますか。
+              </div>
+            </div>
+            <div class="form-section">
+              <h3>4．自分がどう変わったのか</h3>
+              <p class="hint">学んだだけでなく、その後の行動や見方に何が表れたかを書きます。</p>
+              <div class="field">
+                <textarea data-field="simmer.change"></textarea>
+              </div>
+              <div class="prompt-box">
+                問い：以前ならどうしていたでしょう。今では、どんな行動を自然に取るようになりましたか。
+              </div>
+            </div>
+            <div class="form-section">
+              <h3>5．今や未来にどうつながっているのか</h3>
+              <p class="hint">経験を進路・学び・仕事・人との関わりへ接続します。</p>
+              <div class="field">
+                <textarea data-field="simmer.future"></textarea>
+              </div>
+              <div class="prompt-box">
+                問い：この経験は、志望先で何を学ぶ理由になりますか。将来、誰にどんな価値を届けることにつながりますか。
+              </div>
+            </div>
+            <div class="form-section">
+              <h3>料理へ展開する</h3>
+              <p class="hint">同じ経験でも、問いに合わせて見せる部分を変えます。</p>
+              <div class="grid two">
+                <div class="field">
+                  <label>志願理由書では、どの切り口を使いますか</label>
+                  <textarea data-field="simmer.forMotivation" placeholder="興味の原点、価値観、志望先との接点など"></textarea>
+                </div>
+                <div class="field">
+                  <label>自己PRでは、どの強みとして使いますか</label>
+                  <textarea data-field="simmer.forPr"></textarea>
+                </div>
+                <div class="field">
+                  <label>面接では、どの質問に使えそうですか</label>
+                  <textarea data-field="simmer.forInterview" placeholder="挫折、協力、成長、高校生活で頑張ったこと等"></textarea>
+                </div>
+                <div class="field">
+                  <label>小論文では、どんな主張の根拠になりますか</label>
+                  <textarea data-field="simmer.forEssay"></textarea>
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- 05 志望先を調べる -->
+          <section class="view" data-view="research">
+            <header class="section-head">
+              <span class="code">STEP 04 / RESEARCH</span>
+              <h2>志望先を調べ、自分との接点を探す</h2>
+              <p>公式情報を写すだけでは志望理由になりません。「それが自分の何とつながっているか」まで考えます。</p>
+            </header>
+            <div class="form-section">
+              <h3>志望先の基本情報</h3>
+              <div class="grid two">
+                <div class="field">
+                  <label>学校・会社名</label>
+                  <input data-field="research.name" type="text">
+                </div>
+                <div class="field">
+                  <label>学部・学科・職種</label>
+                  <input data-field="research.department" type="text">
+                </div>
+              </div>
+              <div class="field gap-before">
+                <label>公式情報を確認した日</label>
+                <input data-field="research.checkedDate" type="date">
+              </div>
+            </div>
+            <div class="form-section">
+              <h3>志望先側の材料</h3>
+              <div class="field">
+                <label>学べる内容・仕事内容</label>
+                <textarea data-field="research.content"></textarea>
+              </div>
+              <div class="field">
+                <label>興味を持った授業・研究・事業・製品</label>
+                <textarea data-field="research.interest"></textarea>
+              </div>
+              <div class="field">
+                <label>教育方針・理念・社風・大切にしていること</label>
+                <textarea data-field="research.policy"></textarea>
+              </div>
+              <div class="field">
+                <label>実習環境・設備・成長機会</label>
+                <textarea data-field="research.environment"></textarea>
+              </div>
+            </div>
+            <div class="form-section">
+              <h3>自分との接点</h3>
+              <div class="field">
+                <label>上の特徴は、自分のどの経験・価値観・強みとつながりますか</label>
+                <textarea data-field="research.connection"></textarea>
+              </div>
+              <div class="field">
+                <label>他の学校・会社ではなく、ここを選ぶ理由</label>
+                <textarea data-field="research.whyHere"></textarea>
+                <div class="prompt-box">
+                  比較対象を悪く言う必要はありません。「自分の目的にとって、この環境の何が特に必要か」を説明します。
+                </div>
+              </div>
+              <div class="field">
+                <label>入学・入社後、最初に取り組みたい具体的な行動</label>
+                <textarea data-field="research.firstAction"></textarea>
+              </div>
+              <div class="field">
+                <label>この場所で成長した先に、何を還元したいですか</label>
+                <textarea data-field="research.contribution"></textarea>
+              </div>
+            </div>
+          </section>
+          <!-- 06 型に盛り付ける -->
+          <section class="view" data-view="build">
+            <header class="section-head">
+              <span class="code">STEP 05 / BUILD</span>
+              <h2>二つの型に盛り付ける</h2>
+              <p>最初から綺麗な文章を書かず、①から⑤までの構成メモを先に作ります。</p>
+            </header>
+            <div class="form-section">
+              <h3>使う型を選ぶ</h3>
+              <div class="type-selector">
+                <label class="type-card" id="typeA"><input type="radio" name="buildType" value="episode" data-field="build.type"><span class="card-label">TYPE A</span><h3>エピソード起点型</h3><p>過去の経験から、志望理由を組み立てます。</p><div class="flow"><span>志願</span><i>→</i><span>原体験</span><i>→</i><span>価値観</span><i>→</i><span>接点</span><i>→</i><span>未来</span></div></label>
+                <label class="type-card" id="typeB"><input type="radio" name="buildType" value="purpose" data-field="build.type"><span class="card-label">TYPE B</span><h3>目的・理由型</h3><p>未来の目標と、その根拠から組み立てます。</p><div class="flow"><span>志願</span><i>→</i><span>目的</span><i>→</i><span>根拠</span><i>→</i><span>接点</span><i>→</i><span>未来</span></div></label>
+              </div>
+            </div>
+            <div class="form-section">
+              <h3>① 何を目指して志望するのか</h3>
+              <p class="hint">最初の一文。学校・会社へ入りたいことではなく、その場所で実現したい目的を含めます。</p>
+              <textarea data-field="build.part1"></textarea>
+            </div>
+            <div class="form-section" data-build-label="episode">
+              <h3>② 原点となる経験 ／ 目的・将来像</h3>
+              <p class="hint" id="part2Hint">選んだ型に応じて、原体験または将来の目的を書きます。</p>
+              <textarea data-field="build.part2"></textarea>
+            </div>
+            <div class="form-section">
+              <h3>③ 経験から生まれた価値観 ／ 理由・根拠</h3>
+              <p class="hint">「なぜそう考えるのか」を、自分の経験・強み・気質から説明します。</p>
+              <textarea data-field="build.part3"></textarea>
+            </div>
+            <div class="form-section">
+              <h3>④ なぜ、この志望先なのか</h3>
+              <p class="hint">自分の目的と、志望先の学び・仕事・環境が交わる接点を書きます。</p>
+              <textarea data-field="build.part4"></textarea>
+            </div>
+            <div class="form-section">
+              <h3>⑤ その場所で何をするのか</h3>
+              <p class="hint">入った後の行動、伸ばしたい力、成長後に届けたい価値を書きます。</p>
+              <textarea data-field="build.part5"></textarea>
+            </div>
+            <div class="form-section">
+              <h3>構成メモを文章へつなぐ</h3>
+              <p class="hint">ここは本人が清書する欄です。上の①〜⑤を見ながら、接続語と具体例を足してください。</p>
+              <textarea style="min-height:360px" data-field="build.draft" placeholder="完成度を気にせず、自分の言葉で書き始めてください。"></textarea>
+              <div class="helper" id="draftCount">
+                0文字
+              </div>
+            </div>
+          </section>
+          <!-- 07 面接に備える -->
+          <section class="view" data-view="interview">
+            <header class="section-head">
+              <span class="code">STEP 06 / INTERVIEW</span>
+              <h2>面接に耐えられる文章か</h2>
+              <p>面接は、暗記した模範解答を再生する場ではありません。書類の内容を、自分の言葉で対話できるか確かめます。</p>
+            </header>
+            <div class="form-section">
+              <h3>「なぜ？」を三回重ねる</h3>
+              <div class="field">
+                <label>質問の起点となる言葉</label>
+                <input data-field="interview.keyword" type="text" placeholder="例：人の役に立つ技術者になりたい">
+              </div>
+              <div class="field">
+                <label>なぜ、そう思うのですか</label>
+                <textarea data-field="interview.why1"></textarea>
+              </div>
+              <div class="field">
+                <label>なぜ、その経験・価値観が進路につながるのですか</label>
+                <textarea data-field="interview.why2"></textarea>
+              </div>
+              <div class="field">
+                <label>なぜ、この志望先でなければならないのですか</label>
+                <textarea data-field="interview.why3"></textarea>
+              </div>
+            </div>
+            <div class="form-section">
+              <h3>想定質問と回答メモ</h3>
+              <div class="field">
+                <label>あなたは、志望先で具体的に何を学びたい／したいですか</label>
+                <textarea data-field="interview.q1"></textarea>
+              </div>
+              <div class="field">
+                <label>あなたの強みは、この環境でどのように生きますか</label>
+                <textarea data-field="interview.q2"></textarea>
+              </div>
+              <div class="field">
+                <label>うまくいかないとき、どのように立て直しますか</label>
+                <textarea data-field="interview.q3"></textarea>
+              </div>
+              <div class="field">
+                <label>その目標が変わった場合、何を判断軸に次の道を選びますか</label>
+                <textarea data-field="interview.q4"></textarea>
+              </div>
+              <div class="field">
+                <label>面接官に、最後に何を一番覚えて帰ってほしいですか</label>
+                <textarea data-field="interview.q5"></textarea>
+              </div>
+            </div>
+            <div class="form-section">
+              <h3>信頼を作る三つの印象</h3>
+              <div class="grid three">
+                <div class="card">
+                  <span class="card-label">01</span>
+                  <h3>素直さ</h3>
+                  <p>分からないことを誤魔化さず、経験と現在地を正直に話せる。</p>
+                </div>
+                <div class="card">
+                  <span class="card-label">02</span>
+                  <h3>誠実さ</h3>
+                  <p>言葉に根拠があり、相手や事実を都合よく利用しない。</p>
+                </div>
+                <div class="card">
+                  <span class="card-label">03</span>
+                  <h3>熱意</h3>
+                  <p>入った後に何をしたいかを、具体的な行動として語れる。</p>
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- 08 確認・出力 -->
+          <section class="view" data-view="output">
+            <header class="section-head">
+              <span class="code">OUTPUT / FINAL CHECK</span>
+              <h2>確認・出力</h2>
+              <p>完成文を判定するのではなく、自分の言葉として説明できる状態かを確認します。</p>
+            </header>
+            <div class="form-section no-print">
+              <h3>最終チェック</h3>
+              <div class="checklist" id="checklist">
+                <label class="check"><input type="checkbox" data-check="self"><span><strong>自分が本当に思っている内容です</strong>面接で、書いた理由を自分の経験から説明できます。</span></label>
+                <label class="check"><input type="checkbox" data-check="why"><span><strong>「なぜ？」を三回聞かれても答えられます</strong>抽象的な言葉の下に、具体的な理由があります。</span></label>
+                <label class="check"><input type="checkbox" data-check="research"><span><strong>志望先を公式情報で調べました</strong>理念の引用だけでなく、学び・仕事・環境を把握しています。</span></label>
+                <label class="check"><input type="checkbox" data-check="connection"><span><strong>自分と志望先の接点があります</strong>「良い学校・会社だから」ではなく、自分の目的に必要な理由があります。</span></label>
+                <label class="check"><input type="checkbox" data-check="future"><span><strong>入った後の具体的な行動があります</strong>何を学び、どのように成長するかが見えます。</span></label>
+                <label class="check"><input type="checkbox" data-check="trust"><span><strong>素直さ・誠実さ・熱意が伝わります</strong>格好よく見せるための借り物の言葉を使っていません。</span></label>
+                <label class="check"><input type="checkbox" data-check="retention"><span><strong>定着性と活躍性を感じさせられます</strong>この環境で継続して学び、成長する姿が想像できます。</span></label>
+                <label class="check"><input type="checkbox" data-check="voice"><span><strong>書類を見ずに概要を話せます</strong>文章を丸暗記せず、内容を対話できます。</span></label>
+              </div>
+            </div>
+            <div class="output-sheet" id="outputSheet">
+              <h3>煮込み(Lv999)構成シート</h3>
+              <p id="outputMeta"></p>
+              <div id="outputContent">
+              </div>
+            </div>
+            <div class="hero-actions no-print">
+              <button class="btn primary" id="refreshOutput">最新内容で更新</button>
+              <button class="btn accent" id="printOutput">印刷・PDF保存</button>
+              <button class="btn" id="copyDraft">清書欄をコピー</button>
+            </div>
+            <div style="height:18px">
+            </div>
+            <div class="notice no-print">
+              <strong>印刷について：</strong>
+              ブラウザーの印刷画面で「PDFに保存」を選ぶと、構成シートをPDFとして残せます。
+            </div>
+          </section>
+          <footer class="footer">
+            <span>肉じゃがシステム</span>
+            <span>〜煮込み(Lv999)の作り方〜</span>
+            <span class="footer-copyright">Copyright © M.M. All Rights Reserved.</span>
+          </footer>
+        </main>
+      </div>
+    </div>
+    <!-- 肉じゃが法の画像拡大表示 -->
+    <div class="modal figure-modal" id="nikujagaFigureModal" role="dialog" aria-modal="true" aria-label="肉じゃが法の拡大図">
+      <div class="modal-box image-viewer">
+        <img data-close-modal src="images/nikujaga-method.jpg" alt="肉じゃが法の説明図の拡大表示">
+      </div>
+    </div>
+    <!-- 鍋を選ぶモーダル -->
+    <div class="modal" id="projectModal" role="dialog" aria-modal="true" aria-labelledby="projectModalTitle">
+      <div class="modal-box">
+        <div class="modal-head">
+          <h3 id="projectModalTitle">作りかけの鍋</h3>
+          <button class="icon-btn" data-close-modal>閉じる</button>
+        </div>
+        <div class="project-panel">
+          <div class="field">
+            <label>新しい鍋の名前</label>
+            <input id="newProjectName" type="text" placeholder="例：○○大学 情報工学部">
+          </div>
+          <button class="btn accent" id="createProject">新規作成</button>
+        </div>
+        <div class="project-list" id="projectList">
+        </div>
+      </div>
+    </div>
+    <!-- 鍋の管理モーダル -->
+    <div class="modal" id="dataModal" role="dialog" aria-modal="true" aria-labelledby="dataModalTitle">
+      <div class="modal-box">
+        <div class="modal-head">
+          <h3 id="dataModalTitle">鍋の管理</h3>
+          <button class="icon-btn" data-close-modal>閉じる</button>
+        </div>
+        <div class="notice">
+          <strong>保存場所：</strong>
+          入力内容は、この端末のこのブラウザーに保存されます。外部サーバーへ送信しません。
+        </div>
+        <p class="privacy">ブラウザーの履歴・サイトデータを削除した場合、プライベートブラウズを終了した場合、別の端末やブラウザーを使った場合は内容を引き継げません。大切な内容はバックアップしてください。</p>
+        <div class="grid two">
+          <button class="btn primary" id="exportData">バックアップを保存</button>
+          <label class="btn" style="text-align:center">バックアップから復元<input id="importData" type="file" accept="application/json" hidden></label>
+        </div>
+        <div class="auth-admin">
+          <p>このブラウザーに保存された入室認証だけを解除します。鍋の入力内容は削除されません。</p>
+          <button class="btn ghost" id="logoutAuth" type="button">この端末の認証を解除</button>
+        </div>
+        <div style="height:18px">
+        </div>
+        <button class="btn danger" id="deleteAll">すべての鍋を削除</button>
+      </div>
+    </div>
+    <!-- ===== JavaScript ===== -->
+    <script>
+      (() => {
+        'use strict';
+        const STORAGE_KEY = 'nikujaga_lv999_system_v1';
+        const AUTH_KEY = 'nikujaga_lv999_auth_v1';
+        const AUTH_HASH = 'd65868803ffa53fcb9cab659b4b17e00304a64699633c115e5b8306ebec932d8';
+        const $ = (s, r = document) => r.querySelector(s);
+        const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+        const uid = () => 'pot_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+        const nowISO = () => new Date().toISOString();
+        const defaultProject = (title = 'はじめての肉じゃが') => ({
+            id: uid(), createdAt: nowISO(), updatedAt: nowISO(),
+            meta: { title, routeType: '' }, ingredients: {}, simmer: {}, research: {}, build: { type: 'episode' }, interview: {}, checks: {}
+        });
+        let state = { version: 1, activeId: null, projects: [] };
+        let saveTimer = null;
+        // ===== 入室パスワード認証 =====
+        async function sha256(value) {
+            if (!window.crypto?.subtle)
+                throw new Error('このブラウザーでは認証機能を利用できません。');
+            const bytes = new TextEncoder().encode(value);
+            const digest = await crypto.subtle.digest('SHA-256', bytes);
+            return [...new Uint8Array(digest)].map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+        function setAuthError(message = '') {
+            const error = $('#authError');
+            if (error)
+                error.textContent = message;
+        }
+        function unlockSite() {
+            document.body.classList.remove('auth-locked');
+            document.body.classList.add('auth-unlocked');
+            $('#authGate')?.setAttribute('aria-hidden', 'true');
+            setAuthError('');
+        }
+        function lockSite({ focus = true } = {}) {
+            document.body.classList.remove('auth-unlocked');
+            document.body.classList.add('auth-locked');
+            $('#authGate')?.removeAttribute('aria-hidden');
+            const input = $('#authPassword');
+            if (input)
+                input.value = '';
+            setAuthError('');
+            if (focus)
+                setTimeout(() => input?.focus(), 30);
+        }
+        function hasSavedAuth() {
+            try {
+                return localStorage.getItem(AUTH_KEY) === AUTH_HASH;
+            }
+            catch (e) {
+                return false;
+            }
+        }
+        function saveAuth() {
+            try {
+                localStorage.setItem(AUTH_KEY, AUTH_HASH);
+                return true;
+            }
+            catch (e) {
+                return false;
+            }
+        }
+        function clearAuth() {
+            try {
+                localStorage.removeItem(AUTH_KEY);
+            }
+            catch (e) { }
+        }
+        function bindAuth() {
+            const form = $('#authForm');
+            const input = $('#authPassword');
+            if (hasSavedAuth())
+                unlockSite();
+            else
+                lockSite({ focus: true });
+            form?.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const value = input.value;
+                if (!value) {
+                    setAuthError('パスワードを入力してください。');
+                    input.focus();
+                    return;
+                }
+                const submit = form.querySelector('[type="submit"]');
+                submit.disabled = true;
+                submit.textContent = '確認しています…';
+                setAuthError('');
+                try {
+                    const hash = await sha256(value);
+                    if (hash !== AUTH_HASH) {
+                        setAuthError('パスワードが違います。入力内容を確認してください。');
+                        input.select();
+                        return;
+                    }
+                    const remembered = saveAuth();
+                    unlockSite();
+                    if (!remembered)
+                        alert('入室できましたが、このブラウザーでは認証状態を保存できません。次回は再入力が必要です。');
+                }
+                catch (error) {
+                    setAuthError(error?.message || '認証中にエラーが発生しました。');
+                }
+                finally {
+                    submit.disabled = false;
+                    submit.textContent = '入室する';
+                }
+            });
+        }
+        // ===== ローカル保存データの読み込み・保存 =====
+        function loadState() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (parsed && Array.isArray(parsed.projects))
+                        state = parsed;
+                }
+            }
+            catch (e) {
+                console.warn('保存データを読み込めませんでした', e);
+            }
+            if (!state.projects.length) {
+                const p = defaultProject();
+                state.projects = [p];
+                state.activeId = p.id;
+                saveState(true);
+            }
+            if (!state.projects.some(p => p.id === state.activeId))
+                state.activeId = state.projects[0].id;
+        }
+        function activeProject() { return state.projects.find(p => p.id === state.activeId) || state.projects[0]; }
+        function getPath(obj, path) { return path.split('.').reduce((o, k) => o && o[k] !== undefined ? o[k] : '', obj); }
+        function setPath(obj, path, value) { const keys = path.split('.'); let cur = obj; keys.slice(0, -1).forEach(k => { if (!cur[k] || typeof cur[k] !== 'object')
+            cur[k] = {}; cur = cur[k]; }); cur[keys.at(-1)] = value; }
+        function escapeHtml(v = '') { return String(v).replace(/[&<>'"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c])); }
+        function fmtDate(iso) { if (!iso)
+            return '---'; const d = new Date(iso); return d.toLocaleString('ja-JP', { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' }); }
+        function saveState(immediate = false) {
+            const p = activeProject();
+            if (p)
+                p.updatedAt = nowISO();
+            const perform = () => { try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+                updateUI();
+            }
+            catch (e) {
+                console.error('保存できませんでした', e);
+            } };
+            clearTimeout(saveTimer);
+            if (immediate)
+                perform();
+            else
+                saveTimer = setTimeout(perform, 350);
+        }
+        // ===== サイドバーの開閉 =====
+        function setSidebarOpen(open) {
+            const sidebar = $('#sidebar');
+            const scrim = $('#sidebarScrim');
+            if (!sidebar || !scrim)
+                return;
+            sidebar.classList.toggle('open', open);
+            scrim.classList.toggle('open', open);
+            scrim.setAttribute('aria-hidden', String(!open));
+            document.body.classList.toggle('sidebar-open', open);
+            const menuToggle = $('#menuToggle');
+            menuToggle?.setAttribute('aria-expanded', String(open));
+            menuToggle?.setAttribute('aria-label', open ? 'メニューを閉じる' : 'メニューを開く');
+        }
+        // ===== 入力フォームと保存データの同期 =====
+        function hydrateFields() {
+            const p = activeProject();
+            if (!p)
+                return;
+            $$('[data-field]').forEach(el => {
+                const path = el.dataset.field;
+                const val = getPath(p, path);
+                if (el.type === 'radio')
+                    el.checked = String(val) === el.value;
+                else
+                    el.value = val ?? '';
+            });
+            $$('[data-check]').forEach(el => el.checked = !!p.checks?.[el.dataset.check]);
+            updateTypeCards();
+            updateDraftCount();
+            renderOutput();
+        }
+        function bindFields() {
+            $$('[data-field]').forEach(el => {
+                const event = (el.type === 'radio' || el.tagName === 'SELECT') ? 'change' : 'input';
+                el.addEventListener(event, () => { const p = activeProject(); if (!p)
+                    return; setPath(p, el.dataset.field, el.type === 'radio' ? el.value : el.value); saveState(); if (el.dataset.field === 'meta.title')
+                    renderProjectList(); if (el.dataset.field === 'build.type')
+                    updateTypeCards(); if (el.dataset.field === 'build.draft')
+                    updateDraftCount(); updateProgress(); });
+            });
+            $$('[data-check]').forEach(el => el.addEventListener('change', () => { activeProject().checks[el.dataset.check] = el.checked; saveState(); updateProgress(); }));
+            $$('[data-insert]').forEach(btn => btn.addEventListener('click', () => { const field = $(`[data-field="${btn.dataset.insert}"]`); const current = field.value.trim(); field.value = current ? current + '\n' + btn.dataset.text : btn.dataset.text; field.dispatchEvent(new Event('input', { bubbles: true })); }));
+        }
+        // ===== ページ切り替えと画面表示 =====
+        function showView(name) {
+            $$('.view').forEach(v => v.classList.toggle('active', v.dataset.view === name));
+            $$('#nav button').forEach(b => b.classList.toggle('active', b.dataset.viewTarget === name));
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            setSidebarOpen(false);
+            if (name === 'output')
+                renderOutput();
+        }
+        function updateUI() {
+            const p = activeProject();
+            if (!p)
+                return;
+            $('#topStatus').textContent = `${p.meta?.title || '名称未設定'} ｜ 最終更新 ${fmtDate(p.updatedAt)}`;
+            $('#sideProjectName').textContent = p.meta?.title || '名称未設定';
+            updateProgress();
+        }
+        // ===== 進捗率の計算 =====
+        const progressFields = ['meta.title', 'ingredients.want', 'ingredients.axis', 'ingredients.strength', 'ingredients.skill', 'simmer.fact', 'simmer.feel', 'simmer.learn', 'simmer.change', 'simmer.future', 'research.name', 'research.content', 'research.connection', 'research.whyHere', 'research.firstAction', 'build.part1', 'build.part2', 'build.part3', 'build.part4', 'build.part5', 'build.draft', 'interview.why1', 'interview.why2', 'interview.why3'];
+        function updateProgress() {
+            const p = activeProject();
+            const filled = progressFields.filter(path => String(getPath(p, path) || '').trim()).length;
+            const checks = Object.values(p.checks || {}).filter(Boolean).length;
+            const total = progressFields.length + 8;
+            const pct = Math.round((filled + checks) / total * 100);
+            $('#progressFill').style.width = pct + '%';
+            $('#progressText').textContent = `${pct}% 完成（目安）`;
+        }
+        function updateTypeCards() { const type = getPath(activeProject(), 'build.type') || 'episode'; $('#typeA').classList.toggle('selected', type === 'episode'); $('#typeB').classList.toggle('selected', type === 'purpose'); $('#part2Hint').textContent = type === 'episode' ? '志望の原点となった具体的な経験を書きます。' : '自分が目指す将来像と、実現したい目的を書きます。'; }
+        function updateDraftCount() { const v = getPath(activeProject(), 'build.draft') || ''; $('#draftCount').textContent = v.length + '文字'; }
+        // ===== 鍋（プロジェクト）の一覧・操作 =====
+        function renderProjectList() {
+            const box = $('#projectList');
+            box.innerHTML = '';
+            state.projects.slice().sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)).forEach(p => {
+                const item = document.createElement('div');
+                item.className = 'project-item' + (p.id === state.activeId ? ' active' : '');
+                item.innerHTML = `<div><strong>${escapeHtml(p.meta?.title || '名称未設定')}</strong><br><small>更新 ${fmtDate(p.updatedAt)}</small></div><div class="project-actions"><button class="mini-btn" data-act="open">開く</button><button class="mini-btn" data-act="duplicate">複製</button><button class="mini-btn" data-act="delete">削除</button></div>`;
+                item.querySelector('[data-act="open"]').onclick = () => { state.activeId = p.id; saveState(true); hydrateFields(); renderProjectList(); closeModals(); };
+                item.querySelector('[data-act="duplicate"]').onclick = () => { const cp = JSON.parse(JSON.stringify(p)); cp.id = uid(); cp.meta.title = (cp.meta.title || '名称未設定') + '（コピー）'; cp.createdAt = cp.updatedAt = nowISO(); state.projects.push(cp); state.activeId = cp.id; saveState(true); hydrateFields(); renderProjectList(); };
+                item.querySelector('[data-act="delete"]').onclick = () => { if (state.projects.length === 1) {
+                    alert('最後の鍋は削除できません。新しい鍋を作ってから削除してください。');
+                    return;
+                } if (confirm(`「${p.meta?.title || '名称未設定'}」を削除しますか？`)) {
+                    state.projects = state.projects.filter(x => x.id !== p.id);
+                    if (state.activeId === p.id)
+                        state.activeId = state.projects[0].id;
+                    saveState(true);
+                    hydrateFields();
+                    renderProjectList();
+                } };
+                box.appendChild(item);
+            });
+        }
+        // ===== 確認・出力ページの生成 =====
+        function renderOutput() {
+            const p = activeProject();
+            if (!p)
+                return;
+            const val = (path) => { const v = getPath(p, path); return String(v || '').trim() ? escapeHtml(v).replace(/\n/g, '<br>') : '<span class="empty">未記入</span>'; };
+            $('#outputMeta').innerHTML = `<strong>${escapeHtml(p.meta?.title || '名称未設定')}</strong>　${escapeHtml(p.meta?.routeType || '')}<br><small>最終更新：${fmtDate(p.updatedAt)}</small>`;
+            const type = getPath(p, 'build.type') === 'purpose' ? '目的・理由型' : 'エピソード起点型';
+            const blocks = [
+                ['人生観の軸', 'ingredients.axis'], ['やりたいこと', 'ingredients.want'], ['なりたい自分', 'ingredients.become'], ['強み', 'ingredients.strength'], ['スキル', 'ingredients.skill'],
+                ['肉じゃがの材料となる経験', 'simmer.title'], ['何があったのか', 'simmer.fact'], ['何を感じたのか', 'simmer.feel'], ['何を学んだのか', 'simmer.learn'], ['どう変わったのか', 'simmer.change'], ['今・未来との接続', 'simmer.future'],
+                ['志望先', 'research.name'], ['学部・学科・職種', 'research.department'], ['志望先の特徴', 'research.content'], ['自分との接点', 'research.connection'], ['なぜここなのか', 'research.whyHere'], ['入った後の行動', 'research.firstAction'],
+                [`使用する型：${type}`, 'build.part1'], ['② 原点／目的', 'build.part2'], ['③ 価値観／根拠', 'build.part3'], ['④ 志望先との接点', 'build.part4'], ['⑤ その場所での未来', 'build.part5'], ['志願理由書・清書', 'build.draft']
+            ];
+            $('#outputContent').innerHTML = blocks.map(([h, path], i) => `<div class="output-block"><h4>${i === 18 ? '① ' : ''}${escapeHtml(h)}</h4><div class="output-value">${val(path)}</div></div>`).join('');
+        }
+        // ===== モーダル・バックアップ・復元 =====
+        function openModal(id) { setSidebarOpen(false); $('#' + id).classList.add('open'); if (id === 'projectModal')
+            renderProjectList(); }
+        function closeModals() { $$('.modal').forEach(m => m.classList.remove('open')); }
+        function createProject(name) { const p = defaultProject((name || '新しい肉じゃが').trim()); state.projects.push(p); state.activeId = p.id; saveState(true); hydrateFields(); renderProjectList(); return p; }
+        function exportBackup() { const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'nikujaga_lv999_backup_' + new Date().toISOString().slice(0, 10) + '.json'; a.click(); URL.revokeObjectURL(a.href); }
+        async function importBackup(file) { try {
+            const text = await file.text();
+            const data = JSON.parse(text);
+            if (!data || !Array.isArray(data.projects))
+                throw new Error('形式が違います');
+            if (!confirm(`${data.projects.length}件の鍋を復元します。現在のデータは置き換わります。よろしいですか？`))
+                return;
+            state = data;
+            if (!state.activeId || !state.projects.some(p => p.id === state.activeId))
+                state.activeId = state.projects[0]?.id;
+            saveState(true);
+            hydrateFields();
+            renderProjectList();
+            closeModals();
+            alert('復元しました。');
+        }
+        catch (e) {
+            alert('バックアップを読み込めませんでした。ファイルを確認してください。');
+        } }
+        // ===== ボタン・キーボード操作の登録 =====
+        function bindUI() {
+            $$('#nav button').forEach(b => b.onclick = () => showView(b.dataset.viewTarget));
+            $$('[data-view-go]').forEach(b => b.onclick = () => showView(b.dataset.viewGo));
+            $$('[data-open-modal]').forEach(b => b.onclick = () => openModal(b.dataset.openModal));
+            $$('[data-close-modal]').forEach(b => b.onclick = closeModals);
+            $$('.modal').forEach(m => m.addEventListener('click', e => { if (e.target === m)
+                closeModals(); }));
+            $('#menuToggle').setAttribute('aria-expanded', 'false');
+            $('#menuToggle').onclick = () => setSidebarOpen(!$('#sidebar').classList.contains('open'));
+            $('#sidebarScrim').onclick = () => setSidebarOpen(false);
+            $('#startNew').onclick = () => openModal('projectModal');
+            $('#resumeProject').onclick = () => showView('ingredients');
+            $('#createProject').onclick = () => { createProject($('#newProjectName').value); $('#newProjectName').value = ''; closeModals(); showView('ingredients'); };
+            $('#exportData').onclick = exportBackup;
+            $('#importData').onchange = e => { if (e.target.files[0])
+                importBackup(e.target.files[0]); e.target.value = ''; };
+            $('#logoutAuth').onclick = () => { if (confirm('この端末の入室認証を解除しますか？\n鍋の入力内容は削除されません。')) {
+                clearAuth();
+                closeModals();
+                setSidebarOpen(false);
+                lockSite({ focus: true });
+            } };
+            $('#deleteAll').onclick = () => { if (confirm('すべての鍋を削除します。この操作は元に戻せません。')) {
+                localStorage.removeItem(STORAGE_KEY);
+                state = { version: 1, activeId: null, projects: [] };
+                const p = defaultProject();
+                state.projects = [p];
+                state.activeId = p.id;
+                saveState(true);
+                hydrateFields();
+                renderProjectList();
+                closeModals();
+            } };
+            $('#refreshOutput').onclick = renderOutput;
+            $('#printOutput').onclick = () => { renderOutput(); window.print(); };
+            $('#copyDraft').onclick = async () => { const text = getPath(activeProject(), 'build.draft') || ''; if (!text.trim()) {
+                alert('清書欄が未記入です。');
+                return;
+            } try {
+                await navigator.clipboard.writeText(text);
+                alert('清書欄をコピーしました。');
+            }
+            catch (e) {
+                alert('コピーできませんでした。手動で選択してください。');
+            } };
+            document.addEventListener('keydown', e => { if (e.key === 'Escape') {
+                closeModals();
+                setSidebarOpen(false);
+            } if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+                e.preventDefault();
+                saveState(true);
+            } });
+        }
+        // ===== 初期化 =====
+        bindAuth();
+        loadState();
+        bindFields();
+        bindUI();
+        hydrateFields();
+        renderProjectList();
+        updateUI();
+    })();
+    </script>
+  </body>
+</html>
